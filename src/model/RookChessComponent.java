@@ -1,12 +1,13 @@
-package model;
 
-import view.ChessboardPoint;
-import controller.ClickController;
+        package model;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+        import view.ChessboardPoint;
+        import controller.ClickController;
+
+        import javax.imageio.ImageIO;
+        import java.awt.*;
+        import java.io.File;
+        import java.io.IOException;
 
 /**
  * 这个类表示国际象棋里面的车
@@ -28,6 +29,7 @@ public class RookChessComponent extends ChessComponent {
     /**
      * 读取加载车棋子的图片
      *
+     * @throws IOException
      */
     public void loadResource() throws IOException {
         if (ROOK_WHITE == null) {
@@ -96,6 +98,7 @@ public class RookChessComponent extends ChessComponent {
         }
         return true;
     }
+
     /**
      * 注意这个方法，每当窗体受到了形状的变化，或者是通知要进行绘图的时候，就会调用这个方法进行画图。
      *

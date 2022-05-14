@@ -38,6 +38,7 @@ public abstract class ChessComponent extends JComponent {
     private ChessboardPoint chessboardPoint;
     protected final ChessColor chessColor;
     private boolean selected;
+    private ChessboardPoint lastChessboardPoint;
 
     protected ChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor chessColor, ClickController clickController, int size) {
         enableEvents(AWTEvent.MOUSE_EVENT_MASK);
@@ -83,6 +84,8 @@ public abstract class ChessComponent extends JComponent {
         another.setLocation(point1);
     }
 
+
+
     /**
      * @param e 响应鼠标监听事件
      *          <br>
@@ -95,6 +98,7 @@ public abstract class ChessComponent extends JComponent {
         if (e.getID() == MouseEvent.MOUSE_PRESSED) {
             System.out.printf("Click [%d,%d]\n", chessboardPoint.getX(), chessboardPoint.getY());
             clickController.onClick(this);
+
         }
     }
 

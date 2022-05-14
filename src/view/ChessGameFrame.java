@@ -3,49 +3,73 @@ package view;
 import controller.ClickController;
 import controller.GameController;
 import model.ChessColor;
+import model.ChessComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
  */
+
 public class ChessGameFrame extends JFrame {
-    //    public final Dimension FRAME_SIZE ;
+    private JLabel playerLabel;
     private final int WIDTH;
     private final int HEIGTH;
     public final int CHESSBOARD_SIZE;
     private GameController gameController;
-    private ChessColor currentColor = ChessColor.BLACK;
-
+    private Chessboard chessboard;
 
     public ChessGameFrame(int width, int height) {
-        setTitle("2022 CS102A Project Demo"); //设置标题
+        setTitle("2022 CS102A Project Demo");
         this.WIDTH = width;
         this.HEIGTH = height;
         this.CHESSBOARD_SIZE = HEIGTH * 4 / 5;
 
         setSize(WIDTH, HEIGTH);
-        setLocationRelativeTo(null); // Center the window.
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //设置程序关闭按键，如果点击右上方的叉就游戏全部关闭了
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
 
+        this.playerLabel = new JLabel();
+        this.playerLabel.setLocation(HEIGTH, HEIGTH / 10 );
+        this.playerLabel.setSize(200,60);
+        this.playerLabel.setFont(new Font("Calibri", Font.BOLD, 20));
 
+        String path = "images/Background.jpg";
+        ImageIcon background = new ImageIcon(path);
+        JLabel label = new JLabel(background);
+        label.setBounds(0, 0, this.getWidth(), this.getHeight());
+        JPanel imagePanel = (JPanel) this.getContentPane();
+        imagePanel.setOpaque(false);
+        this.getLayeredPane().add(label, Integer.valueOf(Integer.MIN_VALUE));
+
+
+        MusicTest musicTest = new MusicTest("Music/Music1.mp3");
+        musicTest.start();
+
+
+        add(playerLabel);
         addChessboard();
-        addLabel();
-        addHelloButton();
+        addSaveButton();
         addLoadButton();
         addRestartButton();
-        addRepentanceButton();
+        addRegretButton();
+        addActiveContainer();
+
     }
 
 
     /**
      * 在游戏面板中添加棋盘
      */
+
     private void addChessboard() {
-        Chessboard chessboard = new Chessboard(CHESSBOARD_SIZE, CHESSBOARD_SIZE);
+        chessboard = new Chessboard(CHESSBOARD_SIZE, CHESSBOARD_SIZE);
         gameController = new GameController(chessboard);
         chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
         add(chessboard);
@@ -55,30 +79,20 @@ public class ChessGameFrame extends JFrame {
      * 在游戏面板中添加标签
      */
 
-    public ChessColor getCurrentColor() {
-        return currentColor;
-    }
-
-
-    private void addLabel() {
-        JLabel statusLabel1 = new JLabel("Turn for "+getCurrentColor());
-        statusLabel1.setLocation(HEIGTH, HEIGTH / 10);
-        statusLabel1.setSize(200, 60);
-        statusLabel1.setFont(new Font("Rockwell", Font.BOLD, 20));
-        add(statusLabel1);
-
-    }
-
     /**
      * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
      */
 
-    private void addHelloButton() {
-        JButton button = new JButton("Show Hello Here");
-        button.addActionListener((e) -> JOptionPane.showMessageDialog(this, "Hello, world!"));
+    private void addSaveButton() {
+        JButton button = new JButton("Save");;
         button.setLocation(HEIGTH, HEIGTH / 10 + 120);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        button.addActionListener(e -> {
+            System.out.println("Click save");
+            String path = JOptionPane.showInputDialog(this,"Input Path here");
+            gameController.writeFileData(path);
+        });
         add(button);
     }
 
@@ -104,35 +118,47 @@ public class ChessGameFrame extends JFrame {
         add(button);
 
         button.addActionListener(e -> {
-            System.out.println("Restart");
+            System.out.println("Click restart");
             int result = JOptionPane.showConfirmDialog(null, "Are you sure to restart", "restart", JOptionPane.OK_CANCEL_OPTION);
             if (result==0){
-
-            }else {
-
+                chessboard.initiateEmptyChessboard();
+                chessboard.inti();
+                ClickController.round="Round Black";
+                ClickController.cnt=0;
+                repaint();
             }
-
         });
     }
 
-    private void addRepentanceButton(){
-        JButton button = new JButton("Repentance");
+    static JLabel ActiveContainer = new JLabel();
+    public void addActiveContainer(){
+        ActiveContainer.setText(ClickController.round+" || counter: "+ClickController.cnt);
+        ActiveContainer.setLocation(HEIGTH,HEIGTH/10);
+        ActiveContainer.setSize(200,60);
+        ActiveContainer.setFont(new Font("Rockwell",Font.PLAIN,16));
+        ActiveContainer.setForeground(Color.YELLOW);
+        add(ActiveContainer);
+    }
+
+    public static void setActiveContainer(){
+        ActiveContainer.setText(ClickController.round+" || counter: "+ClickController.cnt);
+    }
+
+    private void addRegretButton(){
+        JButton button = new JButton("Regret");
         button.setLocation(HEIGTH,HEIGTH/10+480);
         button.setSize(200,60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
 
-        button.addActionListener(e -> {
-            System.out.println("Repentance");
-            int result = JOptionPane.showConfirmDialog(null, "Are you sure to repentance", "repentance", JOptionPane.OK_CANCEL_OPTION);
-            if (result==0){
-
-            }else {
-
+        button.addActionListener(e -> JOptionPane.showMessageDialog(this,"regret successfully"));
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ClickController.rejiluQiJu();
             }
-
         });
     }
 
+
 }
-//add `1123for test

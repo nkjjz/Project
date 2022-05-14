@@ -1,12 +1,14 @@
-package model;
 
-import controller.ClickController;
-import view.ChessboardPoint;
+        package model;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+        import controller.ClickController;
+        import view.ChessboardPoint;
+
+        import javax.imageio.ImageIO;
+        import java.awt.*;
+        import java.io.File;
+        import java.io.IOException;
+        import java.util.ArrayList;
 
 public class KingChessComponent extends ChessComponent{
 
@@ -15,34 +17,76 @@ public class KingChessComponent extends ChessComponent{
 
     private Image kingImage;
 
+
+
     public KingChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor chessColor, ClickController clickController, int size) {
         super(chessboardPoint, location, chessColor, clickController, size);
         initiateKingImage(chessColor);
     }
 
     @Override
-    public boolean canMoveTo(ChessComponent[][] chessboard, ChessboardPoint destination) {
+    public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination){ //王不能走到被将军的位置
         ChessboardPoint source = getChessboardPoint();
-        if (source.getX() == destination.getX()) {
-            int row = source.getX();
-            for (int col = Math.min(source.getY(), destination.getY()) + 1;
-                 col < Math.max(source.getY(), destination.getY()); col++) {
-                if (!(chessboard[row][col] instanceof EmptySlotComponent)) {
+        int distanceOfCol = Math.abs(source.getY() - destination.getY());
+        int distanceOfRow = Math.abs(source.getX() - destination.getX());
+        return distanceOfCol <= 1 && distanceOfRow <= 1;
+    }
+
+    public boolean capturedByPawn(ChessComponent[][] chessComponent, ChessboardPoint destination){ //判断王斜走后是否会被兵将军
+        int x = destination.getX();
+        int y = destination.getY();
+        if (this.chessColor != ChessColor.NONE) {
+            if (this.chessColor == ChessColor.BLACK) {
+                if (x + 1 <= 6) {
+                    if (y == 7) {
+                        return chessComponent[x + 1][y - 1].chessColor == ChessColor.WHITE && chessComponent[x + 1][y - 1] instanceof PawnChessComponent;
+                    } else if (y == 0) {
+                        return chessComponent[x + 1][y + 1].chessColor == ChessColor.WHITE && chessComponent[x + 1][y + 1] instanceof PawnChessComponent;
+                    } else {
+                        return (chessComponent[x + 1][y + 1].chessColor == ChessColor.WHITE && chessComponent[x + 1][y + 1] instanceof PawnChessComponent) ||
+                                (chessComponent[x + 1][y - 1].chessColor == ChessColor.WHITE && chessComponent[x + 1][y - 1] instanceof PawnChessComponent);
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                if (x - 1 >= 1) {
+                    if (y == 7) {
+                        return chessComponent[x - 1][y - 1].chessColor == ChessColor.BLACK && chessComponent[x - 1][y - 1] instanceof PawnChessComponent;
+                    } else if (y == 0) {
+                        return chessComponent[x - 1][y + 1].chessColor == ChessColor.BLACK && chessComponent[x - 1][y + 1] instanceof PawnChessComponent;
+                    } else {
+                        return (chessComponent[x - 1][y + 1].chessColor == ChessColor.BLACK && chessComponent[x - 1][y + 1] instanceof PawnChessComponent) ||
+                                (chessComponent[x - 1][y - 1].chessColor == ChessColor.BLACK && chessComponent[x - 1][y - 1] instanceof PawnChessComponent);
+                    }
+                } else {
                     return false;
                 }
             }
-        } else if (source.getY() == destination.getY()) {
-            int col = source.getY();
-            for (int row = Math.min(source.getX(), destination.getX()) + 1;
-                 row < Math.max(source.getX(), destination.getX()); row++) {
-                if (!(chessboard[row][col] instanceof EmptySlotComponent)) {
-                    return false;
-                }
-            }
-        } else { // Not on the same row or the same column.
+        }else {
             return false;
         }
-        return true;
+    }
+
+    public boolean capturedByOthers(ChessComponent[][] chessComponents, ChessboardPoint destination){
+        ArrayList<ChessComponent> rival = new ArrayList<>();
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                if (!(chessComponents[i][j] instanceof EmptySlotComponent)){
+                    if (chessComponents[i][j].chessColor != this.chessColor){
+                        rival.add(chessComponents[i][j]);
+                    }
+                }
+            }
+        }
+        for (ChessComponent i : rival){
+            if (!(i instanceof PawnChessComponent)) {
+                if (i.canMoveTo(chessComponents, destination)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

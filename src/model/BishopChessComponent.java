@@ -1,12 +1,13 @@
 package model;
 
-import controller.ClickController;
-import view.ChessboardPoint;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+        import controller.ClickController;
+        import view.ChessboardPoint;
+
+        import javax.imageio.ImageIO;
+        import java.awt.*;
+        import java.io.File;
+        import java.io.IOException;
 
 public class BishopChessComponent extends ChessComponent{
 
@@ -25,8 +26,8 @@ public class BishopChessComponent extends ChessComponent{
         ChessboardPoint source = getChessboardPoint();
         if ((source.getX() + source.getY()) == (destination.getX() + destination.getY())) {
             int col = Math.min(source.getY(), destination.getY()) + 1;
-            int row = Math.max(source.getX(), destination.getX()) + 1;
-            while(col < Math.max(source.getY(), destination.getY()) && row > Math.min(source.getX(), destination.getX())){
+            int row = Math.max(source.getX(), destination.getX()) - 1;
+            while(col < Math.max(source.getY(), destination.getY()) && col >= 0 && row > Math.min(source.getX(), destination.getX()) && row <= 7){
                 if(!(chessComponents[row][col] instanceof EmptySlotComponent)){
                     return false;
                 }
@@ -43,6 +44,8 @@ public class BishopChessComponent extends ChessComponent{
                 col++;
                 row++;
             }
+        }else {
+            return false;
         }
         return true;
     }

@@ -1,12 +1,13 @@
-package model;
 
-import controller.ClickController;
-import view.ChessboardPoint;
+        package model;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+        import controller.ClickController;
+        import view.ChessboardPoint;
+
+        import javax.imageio.ImageIO;
+        import java.awt.*;
+        import java.io.File;
+        import java.io.IOException;
 
 public class KnightChessComponent extends ChessComponent{
 
@@ -22,9 +23,13 @@ public class KnightChessComponent extends ChessComponent{
     @Override
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination){
         ChessboardPoint source = getChessboardPoint();
-        int distanceOfCol = Math.abs(source.getY() - destination.getY());
-        int distanceOfRow = Math.abs(source.getX() - destination.getX());
-        return distanceOfCol <= 1 && distanceOfRow <= 1;
+        if(Math.abs(source.getX() - destination.getX()) == 1 && Math.abs(source.getY() - destination.getY()) == 2){
+            return true;
+        }else if(Math.abs(source.getX() - destination.getX()) == 2 && Math.abs(source.getY() - destination.getY()) == 1){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override

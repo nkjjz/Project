@@ -1,10 +1,15 @@
 package controller;
 
+import model.ChessColor;
+import view.ChessGameFrame;
 import view.Chessboard;
 
-import java.io.IOException;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameController {
@@ -24,5 +29,10 @@ public class GameController {
         }
         return null;
     }
+
+   public void writeFileData(String fileName){
+        File file = new File(fileName);
+
+   }
 
 }
