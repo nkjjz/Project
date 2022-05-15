@@ -5,7 +5,6 @@ import model.*;
 import view.ChessGameFrame;
 import view.Chessboard;
 
-import javax.management.QueryExp;
 import javax.swing.*;
 import java.util.ArrayList;
 
@@ -14,11 +13,12 @@ public class ClickController {
     private ChessComponent first;
     public static String round = "Round Black";
     public static int cnt;
-    public ChessComponent chessComponent[][];
+    public static int b;
+    public ChessComponent[][] chessComponent;
 
 
     public ClickController(Chessboard chessboard) {
-        this.chessboard = chessboard;
+        ClickController.chessboard = chessboard;
     }
 
     public void onClick(ChessComponent chessComponent) {
@@ -37,9 +37,13 @@ public class ClickController {
             } else if (handleSecond(chessComponent)) {
                 jiluQiJu(chessboard.getChessComponents());
                 cnt++;
-                if (cnt%2==0)
+                if (cnt%2==0) {
                     round = "Round Black";
-                else round = "Round White";
+                }
+                else {
+                    round = "Round White";
+                    b++;
+                }
                 chessboard.swapChessComponents(first, chessComponent);
                 chessboard.swapColor();
                 first.setSelected(false);
@@ -101,7 +105,7 @@ public class ClickController {
                     a.append('r');
                 }
             }
-            QiJu.add(a.toString() + "\n");
+            QiJu.add(a + "\n");
             a.append("\n");
         }
         return a.toString();

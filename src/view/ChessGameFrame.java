@@ -120,18 +120,18 @@ public class ChessGameFrame extends JFrame {
             System.out.println("Click restart");
             int result = JOptionPane.showConfirmDialog(null, "Are you sure to restart", "restart", JOptionPane.OK_CANCEL_OPTION);
             if (result==0){
-                chessboard.initiateEmptyChessboard();
-                chessboard.inti();
-                ClickController.round="Round Black";
-                ClickController.cnt=0;
-                repaint();
+                setVisible(false);
+                ClickController.cnt = 0;
+                ClickController.round = "Round Black";
+                ChessGameFrame mainFrame = new ChessGameFrame(1000,760);
+                mainFrame.setVisible(true);
             }
         });
     }
 
     static JLabel ActiveContainer = new JLabel();
     public void addActiveContainer(){
-        ActiveContainer.setText(ClickController.round+" || counter: "+ClickController.cnt);
+        ActiveContainer.setText(ClickController.round+" || counter: "+ClickController.b);
         ActiveContainer.setLocation(HEIGTH,HEIGTH/10);
         ActiveContainer.setSize(200,60);
         ActiveContainer.setFont(new Font("Rockwell",Font.PLAIN,16));
@@ -140,7 +140,7 @@ public class ChessGameFrame extends JFrame {
     }
 
     public static void setActiveContainer(){
-        ActiveContainer.setText(ClickController.round+" || counter: "+ClickController.cnt);
+        ActiveContainer.setText(ClickController.round+" || counter: "+ClickController.b);
     }
 
     private void addRegretButton(){

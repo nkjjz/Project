@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+import static controller.ClickController.chessboard;
+
 /**
  * 这个类表示面板上的棋盘组件对象
  */
@@ -227,5 +229,37 @@ public class Chessboard extends JComponent {
 
     public void loadGame(List<String> chessData) {
         chessData.forEach(System.out::println);
+
+        initiateEmptyChessboard();
+        String a = ClickController.jiluQiJu(chessboard.getChessComponents());
+        for (int i = 0; i < a.length(); i++) {
+            if (a.charAt(i)=='-'){
+
+            }else if (a.charAt(i)=='B'){
+
+            }else if (a.charAt(i)=='b'){
+
+            }else if (a.charAt(i)=='K'){
+
+            }else if (a.charAt(i)=='k'){
+
+            }else if (a.charAt(i)=='P'){
+
+            }else if (a.charAt(i)=='p'){
+
+            }else if (a.charAt(i)=='Q'){
+
+            }else if (a.charAt(i)=='q'){
+
+            }else if (a.charAt(i)=='R'){
+
+            }else if (a.charAt(i)=='r'){
+
+            }else if (a.charAt(i)=='N'){
+
+            }else if (a.charAt(i)=='n'){
+
+            }
+        }
     }
 }
