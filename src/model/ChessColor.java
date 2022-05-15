@@ -16,6 +16,7 @@ public enum ChessColor {
         this.color = color;
     }
 
+
     public String getName() {
         return name;
     }

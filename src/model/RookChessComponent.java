@@ -1,12 +1,13 @@
-package model;
 
-import view.ChessboardPoint;
-import controller.ClickController;
+        package model;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+        import view.ChessboardPoint;
+        import controller.ClickController;
+
+        import javax.imageio.ImageIO;
+        import java.awt.*;
+        import java.io.File;
+        import java.io.IOException;
 
 /**
  * 这个类表示国际象棋里面的车

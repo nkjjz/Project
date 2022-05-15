@@ -21,7 +21,7 @@ public class EmptySlotComponent extends ChessComponent {
     }
 
     @Override
-    public void                                                                                                                              loadResource() throws IOException {
+    public void loadResource() throws IOException {
         //No resource!
     }
 

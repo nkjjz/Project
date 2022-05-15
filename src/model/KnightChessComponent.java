@@ -1,12 +1,13 @@
-package model;
 
-import controller.ClickController;
-import view.ChessboardPoint;
+        package model;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+        import controller.ClickController;
+        import view.ChessboardPoint;
+
+        import javax.imageio.ImageIO;
+        import java.awt.*;
+        import java.io.File;
+        import java.io.IOException;
 
 public class KnightChessComponent extends ChessComponent{
 

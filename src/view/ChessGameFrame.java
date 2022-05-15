@@ -1,113 +1,172 @@
 package view;
 
+import controller.ClickController;
 import controller.GameController;
 import model.ChessColor;
+import model.ChessComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
  */
+
 public class ChessGameFrame extends JFrame {
-    //    public final Dimension FRAME_SIZE ;
+    private JLabel playerLabel;
     private final int WIDTH;
-    private final int HEIGHT;
+    private final int HEIGTH;
     public final int CHESSBOARD_SIZE;
     private GameController gameController;
+    private Chessboard chessboard;
 
     public ChessGameFrame(int width, int height) {
-        setTitle("2022 CS102A Project Demo"); //设置标题
+        setTitle("2022 CS102A Project Demo");
         this.WIDTH = width;
-        this.HEIGHT = height;
-        this.CHESSBOARD_SIZE = HEIGHT * 4 / 5;
+        this.HEIGTH = height;
+        this.CHESSBOARD_SIZE = HEIGTH * 4 / 5;
 
-        setSize(WIDTH, HEIGHT);
-        setLocationRelativeTo(null); // Center the window.
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //设置程序关闭按键，如果点击右上方的叉就游戏全部关闭了
+        setSize(WIDTH, HEIGTH);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
 
+        this.playerLabel = new JLabel();
+        this.playerLabel.setLocation(HEIGTH, HEIGTH / 10 );
+        this.playerLabel.setSize(200,60);
+        this.playerLabel.setFont(new Font("Calibri", Font.BOLD, 20));
 
+        String path = "images/Background.jpg";
+        ImageIcon background = new ImageIcon(path);
+        JLabel label = new JLabel(background);
+        label.setBounds(0, 0, this.getWidth(), this.getHeight());
+        JPanel imagePanel = (JPanel) this.getContentPane();
+        imagePanel.setOpaque(false);
+        this.getLayeredPane().add(label, Integer.valueOf(Integer.MIN_VALUE));
+
+
+        MusicTest musicTest = new MusicTest("Music/Music1.mp3");
+        musicTest.start();
+
+
+        add(playerLabel);
         addChessboard();
-        addLabel();
-        addHelloButton();
+        addSaveButton();
         addLoadButton();
+        addRestartButton();
+        addRegretButton();
+        addActiveContainer();
+
     }
 
 
     /**
      * 在游戏面板中添加棋盘
      */
+
     private void addChessboard() {
-        Chessboard chessboard = new Chessboard(CHESSBOARD_SIZE, CHESSBOARD_SIZE);
+        chessboard = new Chessboard(CHESSBOARD_SIZE, CHESSBOARD_SIZE);
         gameController = new GameController(chessboard);
-        chessboard.setLocation(HEIGHT / 10, HEIGHT / 10);
+        chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
         add(chessboard);
     }
 
     /**
      * 在游戏面板中添加标签
      */
-    private void addLabel() {
-        JLabel statusLabel = new JLabel("Sample label");
-        statusLabel.setLocation(HEIGHT, HEIGHT / 10);
-        statusLabel.setSize(200, 60);
-        statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
-        add(statusLabel);
-    }
 
     /**
      * 在游戏面板中增加一个按钮，如果按下的话就会显示Hello, world!
      */
 
-    private void addHelloButton() {
-        JButton button = new JButton("Show Hello Here");
-        button.addActionListener((e) -> JOptionPane.showMessageDialog(this, "Hello, world!"));
-        button.setLocation(HEIGHT, HEIGHT / 10 + 120);
+    private void addSaveButton() {
+        JButton button = new JButton("Save");;
+        button.setLocation(HEIGTH, HEIGTH / 10 + 120);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        button.addActionListener(e -> {
+            System.out.println("Click save");
+            gameController.saveFileData();
+        });
         add(button);
     }
 
     private void addLoadButton() {
         JButton button = new JButton("Load");
-        button.setLocation(HEIGHT, HEIGHT / 10 + 240);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 240);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
 
         button.addActionListener(e -> {
             System.out.println("Click load");
-            String path = JOptionPane.showInputDialog(this,"Input Path here");
-            gameController.loadGameFromFile(path);
+            JFileChooser chooser = new JFileChooser();
+            chooser.setMultiSelectionEnabled(false);
+            int returnVal = chooser.showOpenDialog(this);
+            System.out.println("returnVal=" + returnVal);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                String filepath = chooser.getSelectedFile().getAbsolutePath();
+                System.out.println(filepath);
+                System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
+                gameController.loadGameFromFile(filepath);
+                repaint();
+            }
         });
     }
 
-    //将军时提示
-    public static void addPrompt(Chessboard chessboard){
-        if (chessboard.getCurrentColor() == ChessColor.BLACK) {
-            JOptionPane.showMessageDialog(null, "白方被将军啦", "提示", JOptionPane.INFORMATION_MESSAGE);
-        }else if (chessboard.getCurrentColor() == ChessColor.WHITE) {
-            JOptionPane.showMessageDialog(null, "黑方被将军啦", "提示", JOptionPane.INFORMATION_MESSAGE);
-        }
+    private void addRestartButton(){
+        JButton button = new JButton("Restart");
+        button.setLocation(HEIGTH,HEIGTH/10+360);
+        button.setSize(200,60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+
+        button.addActionListener(e -> {
+            System.out.println("Click restart");
+            int result = JOptionPane.showConfirmDialog(null, "Are you sure to restart", "restart", JOptionPane.OK_CANCEL_OPTION);
+            if (result==0){
+                chessboard.getClickController().forStart();
+                chessboard.initiateEmptyChessboard();
+                chessboard.inti();
+                chessboard.setCurrentColor(ChessColor.BLACK);
+                repaint();
+            }
+        });
     }
 
-    public static void showWinner(Chessboard chessboard){
-        if (chessboard.getCurrentColor() == ChessColor.BLACK) {
-            JOptionPane.showMessageDialog(null, "黑方获胜！", "提示", JOptionPane.INFORMATION_MESSAGE);
-        }else if (chessboard.getCurrentColor() == ChessColor.WHITE) {
-            JOptionPane.showMessageDialog(null, "白方获胜！", "提示", JOptionPane.INFORMATION_MESSAGE);
-        }
+    static JLabel ActiveContainer = new JLabel();
+    public void addActiveContainer(){
+        ActiveContainer.setText(ClickController.round+" || counter: "+ClickController.b);
+        ActiveContainer.setLocation(HEIGTH,HEIGTH/10);
+        ActiveContainer.setSize(200,60);
+        ActiveContainer.setFont(new Font("Rockwell",Font.PLAIN,16));
+        ActiveContainer.setForeground(Color.YELLOW);
+        add(ActiveContainer);
     }
 
-    public static int pawnPromotion(){
-        String[] option = {"后","车","象","马"};
-        int response = JOptionPane.showOptionDialog(null, "请选择您想升变的类型\n", "小兵可以变身啦", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, "后");
-        return response;
+    public static void setActiveContainer(){
+        ActiveContainer.setText(ClickController.round+" || counter: "+ClickController.b);
     }
 
-    public static void promptOfBeingCaptured(){
-        JOptionPane.showMessageDialog(null, "这样会被将军噢 想想其他的走法吧~", "提示", JOptionPane.INFORMATION_MESSAGE);
+    private void addRegretButton(){
+        JButton button = new JButton("Regret");
+        button.setLocation(HEIGTH,HEIGTH/10+480);
+        button.setSize(200,60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+
+        button.addActionListener(e -> JOptionPane.showMessageDialog(this,"regret successfully"));
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ClickController.rejiluQiJu();
+            }
+        });
     }
+
 
 }
