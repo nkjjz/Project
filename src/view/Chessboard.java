@@ -6,6 +6,7 @@ import controller.ClickController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static controller.ClickController.chessboard;
@@ -261,5 +262,49 @@ public class Chessboard extends JComponent {
 
             }
         }
+    }
+    public ChessComponent getKingOfRival(ChessColor currentPlayer){ // 获得对方王的棋子
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                if (chessComponents[i][j] instanceof KingChessComponent){
+                    if (chessComponents[i][j].getChessColor() != currentPlayer){
+                        return chessComponents[i][j];
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean captureKing(ChessColor currentPlayer){ //判断对方是否被将军
+        List<ChessComponent> list = getPlayerChessComponents(currentPlayer);
+        for (ChessComponent i : list){
+            if (i.canMoveTo(getChessComponents(), getKingOfRival(currentPlayer).getChessboardPoint())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<ChessComponent> getPlayerChessComponents(ChessColor currentPlayer){ //获得行棋方所有的在棋盘上的棋子
+        List<ChessComponent> list = new ArrayList<>();
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                if (!(getChessComponents()[i][j] instanceof EmptySlotComponent) && getChessComponents()[i][j].getChessColor() == currentPlayer){
+                    list.add(getChessComponents()[i][j]);
+                }
+            }
+        }
+        return list;
+    }
+
+    public ChessComponent promotePawn(int response, ChessComponent chessComponent){
+        switch (response) {
+            case 0 -> initQueenOnBoard(chessComponent.getChessboardPoint().getX(), chessComponent.getChessboardPoint().getY(), chessComponent.getChessColor());
+            case 1 -> initRookOnBoard(chessComponent.getChessboardPoint().getX(), chessComponent.getChessboardPoint().getY(), chessComponent.getChessColor());
+            case 2 -> initBishopOnBoard(chessComponent.getChessboardPoint().getX(), chessComponent.getChessboardPoint().getY(), chessComponent.getChessColor());
+            case 3 -> initKnightOnBoard(chessComponent.getChessboardPoint().getX(), chessComponent.getChessboardPoint().getY(), chessComponent.getChessColor());
+        }
+        return chessComponents[chessComponent.getChessboardPoint().getX()][chessComponent.getChessboardPoint().getY()];
     }
 }

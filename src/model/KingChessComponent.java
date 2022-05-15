@@ -1,14 +1,14 @@
+package model;
 
-        package model;
+import controller.ClickController;
+import view.ChessboardPoint;
 
-        import controller.ClickController;
-        import view.ChessboardPoint;
-
-        import javax.imageio.ImageIO;
-        import java.awt.*;
-        import java.io.File;
-        import java.io.IOException;
-        import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KingChessComponent extends ChessComponent{
 
@@ -32,6 +32,48 @@ public class KingChessComponent extends ChessComponent{
         return distanceOfCol <= 1 && distanceOfRow <= 1;
     }
 
+    public List<ChessboardPoint> getCanMovePoints(ChessComponent[][] chessComponents, ChessColor player){ //仅得到王在理论上可移动的点（不考虑移动后被将军）
+        List<ChessboardPoint> canMovePoints = new ArrayList<>();
+        int row = this.getChessboardPoint().getX();
+        int col = this.getChessboardPoint().getY();
+        if (row - 1 >= 0){
+            if (chessComponents[row - 1][col].getChessColor() != player) {
+                canMovePoints.add(new ChessboardPoint(row - 1, col));
+            }
+            if (col - 1 >= 0){
+                if (chessComponents[row - 1][col - 1].getChessColor() != player){
+                    canMovePoints.add(new ChessboardPoint(row - 1, col - 1));
+                }
+                if (chessComponents[row][col - 1].getChessColor() != player) {
+                    canMovePoints.add(new ChessboardPoint(row, col - 1));
+                }
+            }
+            if (col + 1 < 8){
+                if (chessComponents[row - 1][col + 1].getChessColor() != player) {
+                    canMovePoints.add(new ChessboardPoint(row - 1, col + 1));
+                }
+                if (chessComponents[row][col + 1].getChessColor() != player) {
+                    canMovePoints.add(new ChessboardPoint(row, col + 1));
+                }
+            }
+        }
+        if (row + 1 < 8){
+            if (chessComponents[row + 1][col].getChessColor() != player) {
+                canMovePoints.add(new ChessboardPoint(row + 1, col));
+            }
+            if (col - 1 >= 0) {
+                if (chessComponents[row + 1][col - 1].getChessColor() != player) {
+                    canMovePoints.add(new ChessboardPoint(row + 1, col - 1));
+                }
+            }
+            if (col + 1 < 8){
+                if (chessComponents[row + 1][col + 1].getChessColor() != player) {
+                    canMovePoints.add(new ChessboardPoint(row + 1, col + 1));
+                }
+            }
+        }
+        return canMovePoints;
+    }
     public boolean capturedByPawn(ChessComponent[][] chessComponent, ChessboardPoint destination){ //判断王斜走后是否会被兵将军
         int x = destination.getX();
         int y = destination.getY();
@@ -67,8 +109,7 @@ public class KingChessComponent extends ChessComponent{
             return false;
         }
     }
-
-    public boolean capturedByOthers(ChessComponent[][] chessComponents, ChessboardPoint destination){
+    public boolean capturedByOthers(ChessComponent[][] chessComponents, ChessboardPoint destination){ //判断王移动后是否会被其他子将军
         ArrayList<ChessComponent> rival = new ArrayList<>();
         for (int i = 0; i < 8; i++){
             for (int j = 0; j < 8; j++){

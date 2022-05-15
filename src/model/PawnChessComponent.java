@@ -1,13 +1,12 @@
+package model;
 
-        package model;
+import controller.ClickController;
+import view.ChessboardPoint;
 
-        import controller.ClickController;
-        import view.ChessboardPoint;
-
-        import javax.imageio.ImageIO;
-        import java.awt.*;
-        import java.io.File;
-        import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class PawnChessComponent extends ChessComponent{
 
@@ -40,7 +39,7 @@ public class PawnChessComponent extends ChessComponent{
                 if (source.getX() == 1) { //是否第一次移动
                     if (destination.getX() - source.getX() <= 2 && destination.getX() - source.getX() > 0) {
                         int col = source.getY();
-                        for (int row = source.getX() + 1; row < destination.getX(); row++) {
+                        for (int row = source.getX() + 1; row <= destination.getX(); row++) {
                             if (!(chessComponents[row][col] instanceof EmptySlotComponent)) {
                                 return false;
                             }
@@ -49,13 +48,17 @@ public class PawnChessComponent extends ChessComponent{
                         return false;
                     }
                 }else {
-                    return destination.getX() - source.getX() == 1;
+                    if (destination.getX() - source.getX() == 1){
+                        return chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent;
+                    }else {
+                        return false;
+                    }
                 }
             }else {
                 if (source.getX() == 6) {
                     if (source.getX() - destination.getX() <= 2 && source.getX() - destination.getX() > 0) {
                         int col = source.getY();
-                        for (int row = source.getX() - 1; row > destination.getX(); row--) {
+                        for (int row = source.getX() - 1; row >= destination.getX(); row--) {
                             if (!(chessComponents[row][col] instanceof EmptySlotComponent)) {
                                 return false;
                             }
@@ -64,7 +67,11 @@ public class PawnChessComponent extends ChessComponent{
                         return false;
                     }
                 } else {
-                    return source.getX() - destination.getX() == 1;
+                    if (source.getX() - destination.getX() == 1){
+                        return chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent;
+                    }else {
+                        return false;
+                    }
                 }
             }
         }else { //斜走吃子
@@ -84,9 +91,6 @@ public class PawnChessComponent extends ChessComponent{
         }
         return true;
     }
-
-
-
     private void initiatePawnImage(ChessColor color) {
         try {
             loadResource();
@@ -99,9 +103,6 @@ public class PawnChessComponent extends ChessComponent{
             e.printStackTrace();
         }
     }
-
-
-
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

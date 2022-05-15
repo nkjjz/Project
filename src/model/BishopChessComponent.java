@@ -1,13 +1,12 @@
 package model;
 
+import controller.ClickController;
+import view.ChessboardPoint;
 
-        import controller.ClickController;
-        import view.ChessboardPoint;
-
-        import javax.imageio.ImageIO;
-        import java.awt.*;
-        import java.io.File;
-        import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class BishopChessComponent extends ChessComponent{
 
