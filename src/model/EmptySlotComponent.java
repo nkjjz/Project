@@ -24,5 +24,4 @@ public class EmptySlotComponent extends ChessComponent {
     public void loadResource() throws IOException {
         //No resource!
     }
-
 }
