@@ -90,8 +90,7 @@ public class ChessGameFrame extends JFrame {
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         button.addActionListener(e -> {
             System.out.println("Click save");
-            String path = JOptionPane.showInputDialog(this,"Input Path here");
-            gameController.writeFileData(path);
+            gameController.saveFileData();
         });
         add(button);
     }

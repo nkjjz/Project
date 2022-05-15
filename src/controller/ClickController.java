@@ -69,41 +69,42 @@ public class ClickController {
     }
 
     public static ArrayList<String> QiJu = new ArrayList<>();
-    public static void jiluQiJu(ChessComponent[][] chessComponents){
+    public static String jiluQiJu(ChessComponent[][] chessComponents){
         StringBuilder a = new StringBuilder();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (chessComponents[i][j]instanceof EmptySlotComponent) {
-                    a.append("E");
+                    a.append('-');
                 }else if (chessComponents[i][j]instanceof BishopChessComponent&&chessComponents[i][j].getChessColor()== ChessColor.BLACK){
-                    a.append("B");
+                    a.append('B');
                 }else if (chessComponents[i][j]instanceof BishopChessComponent&&chessComponents[i][j].getChessColor()== ChessColor.WHITE){
-                    a.append("b");
+                    a.append('b');
                 }else if (chessComponents[i][j]instanceof KingChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.BLACK){
-                    a.append("K");
+                    a.append('K');
                 }else if (chessComponents[i][j]instanceof KingChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.WHITE){
-                    a.append("k");
+                    a.append('k');
                 }else if (chessComponents[i][j]instanceof KnightChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.BLACK){
-                    a.append("N");
+                    a.append('N');
                 }else if (chessComponents[i][j]instanceof KnightChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.WHITE){
-                    a.append("k");
+                    a.append('k');
                 }else if (chessComponents[i][j]instanceof PawnChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.BLACK){
-                    a.append("P");
+                    a.append('P');
                 }else if (chessComponents[i][j]instanceof PawnChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.WHITE){
-                    a.append("p");
+                    a.append('p');
                 }else if (chessComponents[i][j]instanceof QueenChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.BLACK){
-                    a.append("Q");
+                    a.append('Q');
                 }else if (chessComponents[i][j]instanceof QueenChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.WHITE){
-                    a.append("q");
+                    a.append('q');
                 }else if (chessComponents[i][j]instanceof RookChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.BLACK){
-                    a.append("R");
+                    a.append('R');
                 }else if (chessComponents[i][j]instanceof RookChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.WHITE){
-                    a.append("r");
+                    a.append('r');
                 }
             }
-            QiJu.add(a.toString());
+            QiJu.add(a.toString() + "\n");
+            a.append("\n");
         }
-
+        return a.toString();
     }
     public static void rejiluQiJu(){
         if (QiJu.size()==0){

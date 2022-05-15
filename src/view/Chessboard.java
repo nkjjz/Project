@@ -183,7 +183,7 @@ public class Chessboard extends JComponent {
     }
 
     public void reput(Character a,int i,int j,ChessComponent[][] chess){
-        if (a=='E'){
+        if (a=='-'){
             initEmptyOnBoard(i,j,ChessColor.NONE);
         }else if (a=='B'){
             initBishopOnBoard(i,j,ChessColor.BLACK);
