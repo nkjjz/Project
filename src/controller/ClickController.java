@@ -37,7 +37,6 @@ public class ClickController {
                 first = null;
                 recordFirst.repaint();
             } else if (handleSecond(chessComponent)) {
-                ChessComponent temp = chessComponent;
                 //repaint in swap chess method.
                 chessboard.swapChessComponents(first, chessComponent);
                 //判断行棋方是否移动的是兵且是否到底线 若到底线则升变
@@ -46,13 +45,14 @@ public class ClickController {
                         chessboard.promotePawn(ChessGameFrame.pawnPromotion(), first).repaint();
                     }
                 }
-                //判断当前行棋方移动后是否被对方将军 若被将军 则不能移动该棋子并提示
+                //判断当前行棋方移动后是否被对方将军 若被将军 则不能移动该棋子并提示 第一步判断
                 ChessColor rival = (chessboard.getCurrentColor() == ChessColor.WHITE) ? ChessColor.BLACK : ChessColor.WHITE;
                 if (chessboard.captureKing(rival)){
                     ChessGameFrame.promptOfBeingCaptured();
-                    chessboard.swapChessComponents(first, temp);
-                    chessboard.swapChessComponents(temp, chessComponent);
+
+                    chessboard.swapChessComponents(first, chessComponent);
                 }else {
+
                     if (completelyCaptured(rival)){ //每次移动完都要判断对手是否被将死 若被将死 则返回胜方
                         ChessGameFrame.showWinner(chessboard);
                     }else {

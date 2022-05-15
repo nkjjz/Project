@@ -104,23 +104,37 @@ public class Chessboard extends JComponent {
     }
 
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
+        ChessComponent chess3;
         if (!(chess2 instanceof EmptySlotComponent)) {
             remove(chess2);
-            add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
+            add(chess3 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
+            chess1.swapLocation(chess3);
+            int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
+            chessComponents[row1][col1] = chess1;
+            int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
+            chessComponents[row2][col2] = chess3;
+
+            SoundTest soundTest = new SoundTest("Music/ChessSound.mp3");
+            soundTest.start();
+
+            chess1.repaint();
+            chess3.repaint();
+        }else {
+            chess1.swapLocation(chess2);
+            int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
+            chessComponents[row1][col1] = chess1;
+            int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
+            chessComponents[row2][col2] = chess2;
+
+            SoundTest soundTest = new SoundTest("Music/ChessSound.mp3");
+            soundTest.start();
+
+            chess1.repaint();
+            chess2.repaint();
         }
-        chess1.swapLocation(chess2);
-        int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
-        chessComponents[row1][col1] = chess1;
-        int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
-        chessComponents[row2][col2] = chess2;
-
-        SoundTest soundTest = new SoundTest("Music/ChessSound.mp3");
-        soundTest.start();
-
-        chess1.repaint();
-        chess2.repaint();
 
     }
+
 
     public void initiateEmptyChessboard() {
         for (int i = 0; i < chessComponents.length; i++) {
