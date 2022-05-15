@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 这个类是一个抽象类，主要表示8*8棋盘上每个格子的棋子情况，当前有两个子类继承它，分别是EmptySlotComponent(空棋子)和RookChessComponent(车)。
@@ -107,11 +109,17 @@ public abstract class ChessComponent extends JComponent {
      */
     public abstract boolean canMoveTo(ChessComponent[][] chessboard, ChessboardPoint destination);
 
-    //判断棋子移动后是否将军
-    public boolean captureKing(ChessComponent[][] chessBoard, ChessboardPoint chessboardPointOfKing){
-        return canMoveTo(chessBoard, chessboardPointOfKing);
+    public List<ChessboardPoint> getCanMovePoints(ChessComponent[][] chessComponents, ChessColor player){
+        return null;
     }
 
+    public boolean capturedByPawn(ChessComponent[][] chessComponent, ChessboardPoint destination){
+        return true;
+    }
+
+    public boolean capturedByOthers(ChessComponent[][] chessComponents, ChessboardPoint destination){
+        return true;
+    }
 
 
     /**

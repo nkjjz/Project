@@ -39,7 +39,7 @@ public class PawnChessComponent extends ChessComponent{
                     if (source.getX() == 1) { //是否第一次移动
                         if (destination.getX() - source.getX() <= 2 && destination.getX() - source.getX() > 0) {
                             int col = source.getY();
-                            for (int row = source.getX() + 1; row < destination.getX(); row++) {
+                            for (int row = source.getX() + 1; row <= destination.getX(); row++) {
                                 if (!(chessComponents[row][col] instanceof EmptySlotComponent)) {
                                     return false;
                                 }
@@ -54,7 +54,7 @@ public class PawnChessComponent extends ChessComponent{
                     if (source.getX() == 6) {
                         if (source.getX() - destination.getX() <= 2 && source.getX() - destination.getX() > 0) {
                             int col = source.getY();
-                            for (int row = source.getX() - 1; row > destination.getX(); row--) {
+                            for (int row = source.getX() - 1; row >= destination.getX(); row--) {
                                 if (!(chessComponents[row][col] instanceof EmptySlotComponent)) {
                                     return false;
                                 }
@@ -83,6 +83,8 @@ public class PawnChessComponent extends ChessComponent{
             }
             return true;
         }
+
+
 
 
 
