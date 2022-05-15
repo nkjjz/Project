@@ -55,7 +55,4 @@ public class StartPanel {
             jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             jFrame.setVisible(true);
         }
-
-
-
     }

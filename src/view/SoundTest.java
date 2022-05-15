@@ -24,6 +24,5 @@ class SoundTest extends Thread{
         player = new Player(buffer);
         player.play();
     }
-
 }
 
