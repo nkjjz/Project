@@ -168,5 +168,31 @@ public class ChessGameFrame extends JFrame {
         });
     }
 
+    public static void addPrompt(Chessboard chessboard){
+        if (chessboard.getCurrentColor() == ChessColor.BLACK) {
+            JOptionPane.showMessageDialog(null, "白方被将军啦", "提示", JOptionPane.INFORMATION_MESSAGE);
+        }else if (chessboard.getCurrentColor() == ChessColor.WHITE) {
+            JOptionPane.showMessageDialog(null, "黑方被将军啦", "提示", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public static void showWinner(Chessboard chessboard){
+        if (chessboard.getCurrentColor() == ChessColor.BLACK) {
+            JOptionPane.showMessageDialog(null, "黑方获胜！", "提示", JOptionPane.INFORMATION_MESSAGE);
+        }else if (chessboard.getCurrentColor() == ChessColor.WHITE) {
+            JOptionPane.showMessageDialog(null, "白方获胜！", "提示", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public static int pawnPromotion(){
+        String[] option = {"后","车","象","马"};
+        int response = JOptionPane.showOptionDialog(null, "请选择您想升变的类型\n", "小兵可以变身啦", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, "后");
+        return response;
+    }
+
+    public static void promptOfBeingCaptured(){
+        JOptionPane.showMessageDialog(null, "这样会被将军噢 想想其他的走法吧~", "提示", JOptionPane.INFORMATION_MESSAGE);
+    }
+
 
 }

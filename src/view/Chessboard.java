@@ -6,6 +6,7 @@ import controller.ClickController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static controller.ClickController.chessboard;
@@ -113,23 +114,111 @@ public class Chessboard extends JComponent {
     }
 
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
+        ChessComponent chess3;
         if (!(chess2 instanceof EmptySlotComponent)) {
             remove(chess2);
-            add(chess2 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
+            add(chess3 = new EmptySlotComponent(chess2.getChessboardPoint(), chess2.getLocation(), clickController, CHESS_SIZE));
+            chess2.setChessboardPoint(chess1.getChessboardPoint());
+            chess2.setLocation(chess1.getLocation());
+            chess1.swapLocation(chess3);
+            int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
+            chessComponents[row1][col1] = chess1;
+            int row2 = chess3.getChessboardPoint().getX(), col2 = chess3.getChessboardPoint().getY();
+            chessComponents[row2][col2] = chess3;
+
+            SoundTest soundTest = new SoundTest("Music/ChessSound.mp3");
+            soundTest.start();
+
+            chess1.repaint();
+            chess3.repaint();
+        }else {
+
+            chess1.swapLocation(chess2);
+            int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
+            chessComponents[row1][col1] = chess1;
+            int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
+            chessComponents[row2][col2] = chess2;
+
+
+            SoundTest soundTest = new SoundTest("Music/ChessSound.mp3");
+            soundTest.start();
+
+            chess1.repaint();
+            chess2.repaint();
         }
+    }
+
+    public void swapChessComponents2(ChessComponent chess1, ChessComponent chess2) {
+
         chess1.swapLocation(chess2);
         int row1 = chess1.getChessboardPoint().getX(), col1 = chess1.getChessboardPoint().getY();
         chessComponents[row1][col1] = chess1;
         int row2 = chess2.getChessboardPoint().getX(), col2 = chess2.getChessboardPoint().getY();
         chessComponents[row2][col2] = chess2;
-
-        SoundTest soundTest = new SoundTest("Music/ChessSound.mp3");
-        soundTest.start();
-
+        if (chess2 instanceof PawnChessComponent) {
+            initPawnOnBoard(row2, col2, chess2.getChessColor());
+        }else if (chess2 instanceof KnightChessComponent) {
+            initKnightOnBoard(row2, col2, chess2.getChessColor());
+        }else if (chess2 instanceof BishopChessComponent) {
+            initBishopOnBoard(row2, col2, chess2.getChessColor());
+        }else if (chess2 instanceof RookChessComponent) {
+            initRookOnBoard(row2, col2, chess2.getChessColor());
+        }else if (chess2 instanceof QueenChessComponent) {
+            initQueenOnBoard(row2, col2, chess2.getChessColor());
+        }
         chess1.repaint();
         chess2.repaint();
-
     }
+
+    public ChessComponent getKingOfRival(ChessColor currentPlayer){ // 获得对方王的棋子
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                if (chessComponents[i][j] instanceof KingChessComponent){
+                    if (chessComponents[i][j].getChessColor() != currentPlayer){
+                        return chessComponents[i][j];
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean captureKing(ChessColor currentPlayer){ //判断对方是否被将军
+        List<ChessComponent> list = getPlayerChessComponents(currentPlayer);
+        for (ChessComponent i : list){
+            if (i.canMoveTo(getChessComponents(), getKingOfRival(currentPlayer).getChessboardPoint())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<ChessComponent> getPlayerChessComponents(ChessColor currentPlayer){ //获得行棋方所有的在棋盘上的棋子
+        List<ChessComponent> list = new ArrayList<>();
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                if (!(getChessComponents()[i][j] instanceof EmptySlotComponent) && getChessComponents()[i][j].getChessColor() == currentPlayer){
+                    list.add(getChessComponents()[i][j]);
+                }
+            }
+        }
+        return list;
+    }
+
+    public ChessComponent promotePawn(int response, ChessComponent chessComponent){
+        switch (response) {
+            case 0 :
+                initQueenOnBoard(chessComponent.getChessboardPoint().getX(), chessComponent.getChessboardPoint().getY(), chessComponent.getChessColor());
+            case 1 :
+                initRookOnBoard(chessComponent.getChessboardPoint().getX(), chessComponent.getChessboardPoint().getY(), chessComponent.getChessColor());
+            case 2 :
+                initBishopOnBoard(chessComponent.getChessboardPoint().getX(), chessComponent.getChessboardPoint().getY(), chessComponent.getChessColor());
+            case 3 :
+                initKnightOnBoard(chessComponent.getChessboardPoint().getX(), chessComponent.getChessboardPoint().getY(), chessComponent.getChessColor());
+        }
+        return chessComponents[chessComponent.getChessboardPoint().getX()][chessComponent.getChessboardPoint().getY()];
+    }
+
 
     public void initiateEmptyChessboard() {
         for (int i = 0; i < chessComponents.length; i++) {

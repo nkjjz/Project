@@ -43,7 +43,7 @@ public class QueenChessComponent extends ChessComponent{
             }
         } else if ((source.getX() + source.getY()) == (destination.getX() + destination.getY())) {
             int col = Math.min(source.getY(), destination.getY()) + 1;
-            int row = Math.max(source.getX(), destination.getX()) + 1;
+            int row = Math.max(source.getX(), destination.getX()) - 1;
             while(col < Math.max(source.getY(), destination.getY()) && row > Math.min(source.getX(), destination.getX())){
                 if(!(chessComponents[row][col] instanceof EmptySlotComponent)){
                     return false;

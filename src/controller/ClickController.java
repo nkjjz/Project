@@ -4,9 +4,11 @@ package controller;
 import model.*;
 import view.ChessGameFrame;
 import view.Chessboard;
+import view.ChessboardPoint;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClickController {
     public static Chessboard chessboard;
@@ -29,7 +31,7 @@ public class ClickController {
                 first.repaint();
             }
         } else {
-            if (first == chessComponent) {
+            if (first == chessComponent) { // 再次点击取消选取
                 chessComponent.setSelected(false);
                 ChessComponent recordFirst = first;
                 first = null;
@@ -44,8 +46,32 @@ public class ClickController {
                     round = "Round White";
                     b++;
                 }
+                //repaint in swap chess method.
                 chessboard.swapChessComponents(first, chessComponent);
-                chessboard.swapColor();
+
+                //判断当前行棋方移动后是否被对方将军 若被将军 则不能移动该棋子并提示 第一步判断
+                ChessColor rival = (chessboard.getCurrentColor() == ChessColor.WHITE) ? ChessColor.BLACK : ChessColor.WHITE;
+
+                if (chessboard.captureKing(rival)){
+                    ChessGameFrame.promptOfBeingCaptured();
+                    chessboard.swapChessComponents2(first, chessComponent);
+                }else {
+                    //判断行棋方是否移动的是兵且是否到底线 若到底线则升变
+                    if (first instanceof PawnChessComponent){
+                        if (arriveBaseline(first)){
+                            chessboard.promotePawn(ChessGameFrame.pawnPromotion(), first).repaint();
+                        }
+                    }
+                    if (completelyCaptured(rival)){ //每次移动完都要判断对手是否被将死 若被将死 则返回胜方
+                        ChessGameFrame.showWinner(chessboard);
+                    }else {
+                        //判断当前行棋方移动后是否将对方军 若将军则提示
+                        if (chessboard.captureKing(chessboard.getCurrentColor())){
+                            ChessGameFrame.addPrompt(chessboard);
+                        }
+                    }
+                    chessboard.swapColor();// 更换行棋方
+                }
                 first.setSelected(false);
                 first = null;
             }
@@ -70,6 +96,43 @@ public class ClickController {
     private boolean handleSecond(ChessComponent chessComponent) {
         return chessComponent.getChessColor() != chessboard.getCurrentColor() &&
                 first.canMoveTo(chessboard.getChessComponents(), chessComponent.getChessboardPoint());
+    }
+
+    public boolean completelyCaptured(ChessColor rival){ //判断对手的王是否被将死
+        ChessComponent kingOfRival = chessboard.getKingOfRival(chessboard.getCurrentColor());
+        List<ChessboardPoint> canMovePoints = kingOfRival.getCanMovePoints(chessboard.getChessComponents(), rival);
+        List<ChessComponent> chessComponentList = chessboard.getPlayerChessComponents(rival);
+        int cnt = 0;
+        if (canMovePoints.size() == 0){
+            return false;
+        }else {
+            for (ChessboardPoint i : canMovePoints) {
+                for (ChessComponent j : chessComponentList) {
+                    if (kingOfRival.capturedByOthers(chessboard.getChessComponents(), i) && !j.canMoveTo(chessboard.getChessComponents(), i)) {
+                        cnt++;
+                    } else if (kingOfRival.capturedByPawn(chessboard.getChessComponents(), i) && !j.canMoveTo(chessboard.getChessComponents(), i)) {
+                        cnt++;
+                    }
+                }
+            }
+        }
+        return cnt == canMovePoints.size();
+    }
+
+    public boolean arriveBaseline(ChessComponent chessComponent){
+        switch (chessComponent.getChessColor()){
+            case BLACK:
+                if (chessComponent.getChessboardPoint().getX() == 7){
+                    return true;
+                }
+                break;
+            case WHITE :
+                if (chessComponent.getChessboardPoint().getX() == 0){
+                    return true;
+                }
+                break;
+        }
+        return false;
     }
 
     public static ArrayList<String> QiJu = new ArrayList<>();
