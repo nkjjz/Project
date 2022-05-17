@@ -52,7 +52,6 @@ public class ChessGameFrame extends JFrame {
         MusicTest musicTest = new MusicTest("Music/Music1.mp3");
         musicTest.start();
 
-
         add(playerLabel);
         addChessboard();
         addSaveButton();
@@ -159,13 +158,17 @@ public class ChessGameFrame extends JFrame {
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
 
-        button.addActionListener(e -> JOptionPane.showMessageDialog(this,"regret successfully"));
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ClickController.rejiluQiJu();
-            }
-        });
+        button.addActionListener(e -> {
+                    ClickController.rejiluQiJu();
+                    ClickController.cnt--;
+                    if (ClickController.cnt%2==0){
+                        ClickController.b--;
+                        ActiveContainer.setText("Round Black || counter: "+ClickController.b);
+                    }else {
+                        ActiveContainer.setText("Round White || counter: "+ClickController.b);
+                    }
+                }
+        );
     }
 
     public static void addPrompt(Chessboard chessboard){

@@ -184,7 +184,7 @@ public class ClickController {
                 }else if (chessComponents[i][j]instanceof KnightChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.BLACK){
                     a.append('N');
                 }else if (chessComponents[i][j]instanceof KnightChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.WHITE){
-                    a.append('k');
+                    a.append('n');
                 }else if (chessComponents[i][j]instanceof PawnChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.BLACK){
                     a.append('P');
                 }else if (chessComponents[i][j]instanceof PawnChessComponent &&chessComponents[i][j].getChessColor()== ChessColor.WHITE){
@@ -199,11 +199,13 @@ public class ClickController {
                     a.append('r');
                 }
             }
-            QiJu.add(a + "\n");
+
             a.append("\n");
 
         }
-        a.append(cnt);
+        QiJu.add(String.valueOf(a));
+        a.append(cnt).append("\n");
+        a.append(b);
         return a.toString();
     }
     public static void rejiluQiJu(){
@@ -213,20 +215,18 @@ public class ClickController {
             String shangyibu = QiJu.get(QiJu.size()-1);
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    chessboard.reput(shangyibu.charAt(i*8+j),i,j,chessboard.getChessComponents());
+                    chessboard.reput(shangyibu.charAt(i*9+j),i,j,chessboard.getChessComponents());
                 }
             }
             chessboard.swapColor();
             QiJu.remove(QiJu.size()-1);
-            cnt--;
+            JOptionPane.showMessageDialog(null,"悔棋成功");
         }
     }
-        public void forStart(){
-            round = "Round Black";
-            cnt=0;
-            b=0;
-
-        }
-
+    public void forStart(){
+        round = "Round Black";
+        cnt=0;
+        b=0;
+    }
 
 }

@@ -354,7 +354,7 @@ public class Chessboard extends JComponent {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (chessData.get(i).charAt(j)=='-'){
-                   initEmptyOnBoard(i,j,ChessColor.NONE);
+                    initEmptyOnBoard(i,j,ChessColor.NONE);
                 }else if (chessData.get(i).charAt(j)=='B'){
                     initBishopOnBoard(i,j,ChessColor.BLACK);
                 }else if (chessData.get(i).charAt(j)=='b'){
@@ -382,12 +382,30 @@ public class Chessboard extends JComponent {
                 }
             }
         }
-
         int a = chessData.get(8).charAt(0);
+        int b = chessData.get(9).charAt(0)-48;
         if (a%2==0){
-            setCurrentColor(ChessColor.BLACK);
+            ChessGameFrame.ActiveContainer.setText("Round Black || counter: "+b);
         }else {
-            setCurrentColor(ChessColor.WHITE);
+            ChessGameFrame.ActiveContainer.setText("Round White || counter: "+b);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (chessData.get(i).charAt(j)!='K'&&chessData.get(i).charAt(j)!='k'&&chessData.get(i).charAt(j)!='Q'&&chessData.get(i).charAt(j)!='q'&&chessData.get(i).charAt(j)!='R'&&chessData.get(i).charAt(j)!='r'&&chessData.get(i).charAt(j)!='P'&&chessData.get(i).charAt(j)!='p'&&chessData.get(i).charAt(j)!='N'&&chessData.get(i).charAt(j)!='n'&&chessData.get(i).charAt(j)!='B'&&chessData.get(i).charAt(j)!='b'&&chessData.get(i).charAt(j)!='-'){
+                    JOptionPane.showMessageDialog(null,"棋子并非六种之一，棋子并非黑白棋子");
+                }
+            }
+        }
+
+        for (int i = 0; i < 8; i++) {
+            if (chessData.get(i).length()!=8){
+                JOptionPane.showMessageDialog(null,"棋盘并非8*8");
+            }
+        }
+
+        if (chessData.size()!=8){
+            JOptionPane.showMessageDialog(null,"棋盘并非8*8");
         }
 
     }
