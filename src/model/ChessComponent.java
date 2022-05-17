@@ -41,6 +41,8 @@ public abstract class ChessComponent extends JComponent {
     private boolean selected;
     private ChessboardPoint lastChessboardPoint;
 
+    private int counter;
+
     protected ChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor chessColor, ClickController clickController, int size) {
         enableEvents(AWTEvent.MOUSE_EVENT_MASK);
         setLocation(location);
@@ -85,7 +87,17 @@ public abstract class ChessComponent extends JComponent {
         another.setLocation(point1);
     }
 
+    public int getCounter() {
+        return counter;
+    }
 
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
+    public ChessboardPoint haveAdjacentPawn(ChessComponent[][] chessboard){
+        return null;
+    }
 
     /**
      * @param e 响应鼠标监听事件

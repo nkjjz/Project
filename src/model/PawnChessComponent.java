@@ -49,7 +49,13 @@ public class PawnChessComponent extends ChessComponent{
                         return false;
                     }
                 }else {
-                    return destination.getX() - source.getX() == 1;
+                    if (destination.getX() - source.getX() == 1){
+                        this.setCounter(0);
+                        return chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent;
+                    }else {
+                        this.setCounter(0);
+                        return false;
+                    }
                 }
             }else {
                 if (source.getX() == 6) {
@@ -64,25 +70,89 @@ public class PawnChessComponent extends ChessComponent{
                         return false;
                     }
                 } else {
-                    return source.getX() - destination.getX() == 1;
+                    if (source.getX() - destination.getX() == 1){
+                        this.setCounter(0);
+                        return chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent;
+                    }else {
+                        this.setCounter(0);
+                        return false;
+                    }
                 }
             }
-        }else { //斜走吃子
+        }else { //斜走吃子或斜走吃过路兵
             if (chessColor == ChessColor.BLACK) {
                 if (destination.getX() - source.getX() == 1 && Math.abs(destination.getY() - source.getY()) == 1) {
-                    return (chessComponents[destination.getX()][destination.getY()].chessColor == ChessColor.WHITE);
-                } else {
-                    return false;
-                }
+                    if ((chessComponents[destination.getX()][destination.getY()].chessColor == ChessColor.WHITE)){
+                        this.setCounter(0);
+                        return true;
+                    }else if ((chessComponents[destination.getX()][destination.getY()].chessColor == ChessColor.NONE)){
+                        this.setCounter(1);
+                        return true;
+                    }
+                }else return false;
             }else {
                 if (source.getX() - destination.getX() == 1 && Math.abs(destination.getY() - source.getY()) == 1) {
-                    return (chessComponents[destination.getX()][destination.getY()].chessColor == ChessColor.BLACK);
-                }else {
-                    return false;
-                }
+                    if (chessComponents[destination.getX()][destination.getY()].chessColor == ChessColor.BLACK){
+                        this.setCounter(0);
+                        return true;
+                    } else if (chessComponents[destination.getX()][destination.getY()].chessColor == ChessColor.NONE){
+                        this.setCounter(1);
+                        return true;
+                    }
+                }else return false;
             }
         }
+        this.setCounter(0);
         return true;
+    }
+
+    public ChessboardPoint haveAdjacentPawn(ChessComponent[][] chessboard){ //分别判断黑白方是否形成过路兵的情况
+        int col = this.getChessboardPoint().getY();
+        switch (this.getChessColor()){
+            case BLACK:
+                if (this.getChessboardPoint().getX() == 3){
+                    if (col - 1 >= 0 && col + 1 <= 7) {
+                        if (chessboard[3][col - 1] instanceof PawnChessComponent && chessboard[3][col - 1].getChessColor() != this.getChessColor()) {
+                            return new ChessboardPoint(2, col);
+                        } else if (chessboard[3][col + 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()) {
+                            return new ChessboardPoint(2, col);
+                        }
+                    }else if (col == 0){
+                        if (chessboard[3][col + 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
+                            return new ChessboardPoint(2, 0);
+                        }
+                    }else if (col == 7){
+                        if (chessboard[3][col - 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
+                            return new ChessboardPoint(2, 7);
+                        }
+                    }
+                }else {
+                    return null;
+                }
+                break;
+            case WHITE:
+                if (this.getChessboardPoint().getX() == 4){
+                    if (col - 1 >= 0 && col + 1 <= 7) {
+                        if (chessboard[4][col - 1] instanceof PawnChessComponent && chessboard[3][col - 1].getChessColor() != this.getChessColor()) {
+                            return new ChessboardPoint(5, col);
+                        } else if (chessboard[4][col + 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()) {
+                            return new ChessboardPoint(5, col);
+                        }
+                    }else if (col == 0){
+                        if (chessboard[4][col + 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
+                            return new ChessboardPoint(5, 0);
+                        }
+                    }else if (col == 7){
+                        if (chessboard[4][col - 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
+                            return new ChessboardPoint(5, 7);
+                        }
+                    }
+                }else {
+                    return null;
+                }
+                break;
+        }
+        return null;
     }
 
 

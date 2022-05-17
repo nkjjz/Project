@@ -1,17 +1,17 @@
 
-        package model;
+    package model;
 
-        import controller.ClickController;
-        import view.ChessboardPoint;
+    import controller.ClickController;
+    import view.ChessboardPoint;
 
-        import javax.imageio.ImageIO;
-        import java.awt.*;
-        import java.io.File;
-        import java.io.IOException;
-        import java.util.ArrayList;
-        import java.util.List;
+    import javax.imageio.ImageIO;
+    import java.awt.*;
+    import java.io.File;
+    import java.io.IOException;
+    import java.util.ArrayList;
+    import java.util.List;
 
-        public class KingChessComponent extends ChessComponent{
+    public class KingChessComponent extends ChessComponent{
 
     private Image King_WHITE;
     private Image King_BLACK;
@@ -33,7 +33,7 @@
         return distanceOfCol <= 1 && distanceOfRow <= 1;
     }
 
-    public java.util.List<ChessboardPoint> getCanMovePoints(ChessComponent[][] chessComponents, ChessColor player){ //仅得到王在理论上可移动的点（不考虑移动后被将军）
+    public List<ChessboardPoint> getCanMovePoints(ChessComponent[][] chessComponents, ChessColor player){ //仅得到王在理论上可移动的点（不考虑移动后被将军）
         List<ChessboardPoint> canMovePoints = new ArrayList<>();
         int row = this.getChessboardPoint().getX();
         int col = this.getChessboardPoint().getY();

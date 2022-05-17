@@ -113,6 +113,7 @@ public class Chessboard extends JComponent {
         add(chessComponents[row][col] = chessComponent);
     }
 
+
     public void swapChessComponents(ChessComponent chess1, ChessComponent chess2) {
         ChessComponent chess3;
         if (!(chess2 instanceof EmptySlotComponent)) {
@@ -170,6 +171,22 @@ public class Chessboard extends JComponent {
         chess2.repaint();
     }
 
+    public void removePasserPawn(ChessComponent first, ChessComponent destination, Chessboard chessboard){
+        int row = destination.getChessboardPoint().getX(), col = destination.getChessboardPoint().getY();
+        ChessComponent temp;
+        if (first.getChessColor() == ChessColor.BLACK){
+            temp = chessboard.getChessComponents()[row - 1][col];
+            remove(chessboard.getChessComponents()[row - 1][col]);
+            add(chessboard.getChessComponents()[row - 1][col] = new EmptySlotComponent(temp.getChessboardPoint(), temp.getLocation(), clickController, CHESS_SIZE));
+            chessboard.getChessComponents()[row - 1][col].repaint();
+        }else {
+            temp = chessboard.getChessComponents()[row + 1][col];
+            remove(chessboard.getChessComponents()[row + 1][col]);
+            add(chessboard.getChessComponents()[row + 1][col] = new EmptySlotComponent(temp.getChessboardPoint(), temp.getLocation(), clickController, CHESS_SIZE));
+            chessboard.getChessComponents()[row + 1][col].repaint();
+        }
+    }
+
     public ChessComponent getKingOfRival(ChessColor currentPlayer){ // 获得对方王的棋子
         for (int i = 0; i < 8; i++){
             for (int j = 0; j < 8; j++){
@@ -209,12 +226,16 @@ public class Chessboard extends JComponent {
         switch (response) {
             case 0 :
                 initQueenOnBoard(chessComponent.getChessboardPoint().getX(), chessComponent.getChessboardPoint().getY(), chessComponent.getChessColor());
+                break;
             case 1 :
                 initRookOnBoard(chessComponent.getChessboardPoint().getX(), chessComponent.getChessboardPoint().getY(), chessComponent.getChessColor());
+                break;
             case 2 :
                 initBishopOnBoard(chessComponent.getChessboardPoint().getX(), chessComponent.getChessboardPoint().getY(), chessComponent.getChessColor());
+                break;
             case 3 :
                 initKnightOnBoard(chessComponent.getChessboardPoint().getX(), chessComponent.getChessboardPoint().getY(), chessComponent.getChessColor());
+                break;
         }
         return chessComponents[chessComponent.getChessboardPoint().getX()][chessComponent.getChessboardPoint().getY()];
     }
@@ -254,13 +275,13 @@ public class Chessboard extends JComponent {
     }
 
     private void initKingOnBoard(int row,int col, ChessColor color) {
-        ChessComponent chessComponent = new KingChessComponent(new ChessboardPoint(row, 3), calculatePoint(row, col), color, clickController, CHESS_SIZE);
+        ChessComponent chessComponent = new KingChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }
 
     private void initQueenOnBoard(int row,int col, ChessColor color) {
-        ChessComponent chessComponent = new QueenChessComponent(new ChessboardPoint(row, 4), calculatePoint(row, col), color, clickController, CHESS_SIZE);
+        ChessComponent chessComponent = new QueenChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }
