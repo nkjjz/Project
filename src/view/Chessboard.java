@@ -382,13 +382,26 @@ public class Chessboard extends JComponent {
                 }
             }
         }
-        int a = chessData.get(8).charAt(0);
-        int b = chessData.get(9).charAt(0)-48;
-        if (a%2==0){
-            ChessGameFrame.ActiveContainer.setText("Round Black || counter: "+b);
-        }else {
-            ChessGameFrame.ActiveContainer.setText("Round White || counter: "+b);
+        String bushuString="";
+
+        for (int i=0;i<chessData.get(8).length();i++){
+            bushuString+=chessData.get(8).charAt(i);
         }
+        int bushu=Integer.parseInt(bushuString);
+        System.out.println(bushu);
+        String huiheString="";
+        for (int i = 0; i < chessData.get(9).length(); i++) {
+            huiheString+=chessData.get(9).charAt(i);
+        }
+        int huihe = Integer.parseInt(huiheString);
+        if (bushu%2==0){
+
+            ChessGameFrame.ActiveContainer.setText("Round Black || counter: "+huihe);
+        }else {
+            ChessGameFrame.ActiveContainer.setText("Round White || counter: "+huihe);
+        }
+        clickController.cnt=bushu;
+        clickController.b=huihe;
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -399,14 +412,16 @@ public class Chessboard extends JComponent {
         }
 
         for (int i = 0; i < 8; i++) {
-            if (chessData.get(i).length()!=8){
+            if (chessData.get(i).length()!=10){
                 JOptionPane.showMessageDialog(null,"棋盘并非8*8");
             }
         }
 
-        if (chessData.size()!=8){
+        if (chessData.size()!=10){
             JOptionPane.showMessageDialog(null,"棋盘并非8*8");
         }
 
+
+        repaint();
     }
 }
