@@ -160,12 +160,16 @@ public class ChessGameFrame extends JFrame {
 
         button.addActionListener(e -> {
                     ClickController.rejiluQiJu();
-                    ClickController.cnt--;
-                    if (ClickController.cnt%2==0){
-                        ClickController.b--;
-                        ActiveContainer.setText("Round Black || counter: "+ClickController.b);
+                    if (ClickController.QiJu.size()!=0) {
+                        ClickController.cnt--;
+                        if (ClickController.cnt % 2 == 0) {
+                            ClickController.b--;
+                            ActiveContainer.setText("Round Black || counter: " + ClickController.b);
+                        } else {
+                            ActiveContainer.setText("Round White || counter: " + ClickController.b);
+                        }
                     }else {
-                        ActiveContainer.setText("Round White || counter: "+ClickController.b);
+                        ActiveContainer.setText("Round Black || counter: 0");
                     }
                 }
         );

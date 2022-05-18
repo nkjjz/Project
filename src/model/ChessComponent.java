@@ -156,6 +156,5 @@ public abstract class ChessComponent extends JComponent {
     protected void paintComponent(Graphics g) {
         super.paintComponents(g);
         drawColor(g);
-
     }
 }
