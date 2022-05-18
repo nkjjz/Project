@@ -4,11 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ColorSetter extends JFrame {
-    public static Color color = new Color(255, 150, 50);
-    public static Color chessColor1 = Color.BLACK;
-    public static Color chessColor2 = Color.WHITE;
+    public static Color[] BACKGROUND_COLORS = {Color.WHITE, Color.BLACK};
     public ColorSetter(int frameSize){
-        this.setTitle("PlayerSetter");
+        this.setTitle("主题选择");
         this.setLayout(null);
         Insets inset = this.getInsets();
         this.setSize((int)((frameSize + inset.left + inset.right) * 0.5), (int)((frameSize + inset.top + inset.bottom) * 0.3));
@@ -25,45 +23,18 @@ public class ColorSetter extends JFrame {
         JComboBox<String> boardColorSetter = new JComboBox<>();
         boardColorSetter.addItem("Tradition");
         boardColorSetter.addItem("Dark");
-        boardColorSetter.addItem("Light");
+        boardColorSetter.addItem("Bright");
         boardColorSetter.setLocation(boardColor.getWidth(), 23);
         boardColorSetter.setFont(new Font("Calibri", Font.BOLD, 15));
         boardColorSetter.setSize((int)(this.getWidth() * 0.4) , (int)(this.getHeight() * 0.1));
         add(boardColorSetter);
         boardColorSetter.addActionListener(e -> {
             if (boardColorSetter.getSelectedIndex() == 0) {
-                color = new Color(255, 150, 50);
+                BACKGROUND_COLORS = new Color[]{Color.WHITE, Color.BLACK};
             } else if (boardColorSetter.getSelectedIndex()==1 ) {
-                color = new Color(102 , 88 , 86);
+                BACKGROUND_COLORS = new Color[]{Color.GRAY, Color.BLACK};
             } else if (boardColorSetter.getSelectedIndex() == 2) {
-                color = Color.pink;
-            }
-        });;
-
-
-        JLabel chessColor = new JLabel();
-        chessColor.setSize((int)(this.getWidth() * 0.4) , (int)(this.getHeight() * 0.2));
-        chessColor.setLocation((int)(this.getWidth() *0.1) , 80);
-        chessColor.setText("ChessColor:");
-        chessColor.setFont(new Font("Calibri", Font.BOLD, 20));
-        chessColor.setVisible(true);
-        add(chessColor);
-
-        JComboBox<String> chessColorSetter = new JComboBox<>();
-        chessColorSetter.addItem("Tradition");
-        chessColorSetter.addItem("Red & Green");
-        chessColorSetter.setLocation(boardColor.getWidth(), 93);
-        chessColorSetter.setFont(new Font("Calibri", Font.BOLD, 15));
-        chessColorSetter.setSize((int)(this.getWidth() * 0.4) , (int)(this.getHeight() * 0.1));
-        add(chessColorSetter);
-        chessColorSetter.addActionListener(e -> {
-            if (chessColorSetter.getSelectedIndex() == 0) {
-                chessColor1 = Color.BLACK;
-                chessColor2 = Color.WHITE;
-
-            } else if (chessColorSetter.getSelectedIndex()==1 ) {
-                chessColor1 = Color.RED;
-                chessColor2 = Color.green;
+                BACKGROUND_COLORS = new Color[]{Color.WHITE, Color.orange};
             }
         });
 

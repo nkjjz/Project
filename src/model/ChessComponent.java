@@ -2,6 +2,7 @@ package model;
 
 import view.ChessboardPoint;
 import controller.ClickController;
+import view.ColorSetter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,8 +23,8 @@ public abstract class ChessComponent extends JComponent {
      * 因此每个棋子占用的形状是一个正方形，大小是50*50
      */
 
-//    private static final Dimension CHESSGRID_SIZE = new Dimension(1080 / 4 * 3 / 8, 1080 / 4 * 3 / 8);
-    private static final Color[] BACKGROUND_COLORS = {Color.WHITE, Color.BLACK};
+
+
     /**
      * handle click event
      */
@@ -143,12 +144,18 @@ public abstract class ChessComponent extends JComponent {
      */
     public abstract void loadResource() throws IOException;
 
+    public void drawColor(Graphics g){
+        Color squareColor = ColorSetter.BACKGROUND_COLORS[(chessboardPoint.getX() + chessboardPoint.getY()) % 2];
+        g.setColor(squareColor);
+        System.out.printf("repaint chess [%d,%d]\n", chessboardPoint.getX(), chessboardPoint.getY());
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
+    }
+
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponents(g);
-        System.out.printf("repaint chess [%d,%d]\n", chessboardPoint.getX(), chessboardPoint.getY());
-        Color squareColor = BACKGROUND_COLORS[(chessboardPoint.getX() + chessboardPoint.getY()) % 2];
-        g.setColor(squareColor);
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
+        drawColor(g);
+
     }
 }

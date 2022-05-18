@@ -204,7 +204,11 @@ public class ClickController {
 
         }
         QiJu.add(String.valueOf(a));
-        a.append(cnt).append("\n");
+        if (cnt%2==0){
+            a.append('B');
+        }else {
+            a.append('W');
+        }
         a.append(b);
         return a.toString();
     }
