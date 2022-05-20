@@ -385,11 +385,11 @@ public class Chessboard extends JComponent {
 
         int bushu=cnt;
         System.out.println(bushu);
-        String huiheString="";
+        StringBuilder huiheString= new StringBuilder();
         for (int i = 1; i < chessData.get(8).length(); i++) {
-            huiheString+=chessData.get(8).charAt(i);
+            huiheString.append(chessData.get(8).charAt(i));
         }
-        int huihe = Integer.parseInt(huiheString);
+        int huihe = Integer.parseInt(huiheString.toString());
         if (bushu%2==0){
             ChessGameFrame.ActiveContainer.setText("Round Black || counter: "+huihe);
         }else {

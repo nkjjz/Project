@@ -201,5 +201,4 @@ public class ChessGameFrame extends JFrame {
         JOptionPane.showMessageDialog(null, "这样会被将军噢 想想其他的走法吧~", "提示", JOptionPane.INFORMATION_MESSAGE);
     }
 
-
 }
