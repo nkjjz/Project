@@ -24,6 +24,7 @@ public class ChessGameFrame extends JFrame {
     private GameController gameController;
     private Chessboard chessboard;
 
+
     public ChessGameFrame(int width, int height) {
         setTitle("2022 CS102A Project Demo");
         this.WIDTH = width;
@@ -109,10 +110,14 @@ public class ChessGameFrame extends JFrame {
             System.out.println("returnVal=" + returnVal);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 String filepath = chooser.getSelectedFile().getAbsolutePath();
-                System.out.println(filepath);
-                System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
-                gameController.loadGameFromFile(filepath);
-                repaint();
+                if (!filepath.endsWith(".txt")){
+                    JOptionPane.showMessageDialog(null,"文件格式错误");
+                }else {
+                    System.out.println(filepath);
+                    System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
+                    gameController.loadGameFromFile(filepath);
+                    repaint();
+                }
             }
         });
     }

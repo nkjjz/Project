@@ -22,9 +22,6 @@ public abstract class ChessComponent extends JComponent {
      * <br>
      * 因此每个棋子占用的形状是一个正方形，大小是50*50
      */
-
-
-
     /**
      * handle click event
      */
@@ -41,7 +38,6 @@ public abstract class ChessComponent extends JComponent {
     protected final ChessColor chessColor;
     private boolean selected;
     private ChessboardPoint lastChessboardPoint;
-
     private int counter;
 
     protected ChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor chessColor, ClickController clickController, int size) {
@@ -108,16 +104,14 @@ public abstract class ChessComponent extends JComponent {
     @Override
     protected void processMouseEvent(MouseEvent e) {
         super.processMouseEvent(e);
-
         if(e.getID()==MouseEvent.MOUSE_ENTERED){
             Graphics g=getGraphics();
             ((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.5f));
-            g.setColor(Color.cyan);
+            g.setColor(Color.CYAN);
             g.fillRect(0,0,this.getWidth(),this.getHeight());
         }
         if(e.getID()==MouseEvent.MOUSE_EXITED)
         {paintComponent(getGraphics());}
-
         if (e.getID() == MouseEvent.MOUSE_PRESSED) {
             System.out.printf("Click [%d,%d]\n", chessboardPoint.getX(), chessboardPoint.getY());
             clickController.onClick(this);

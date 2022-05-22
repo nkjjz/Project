@@ -242,9 +242,7 @@ public class Chessboard extends JComponent {
 
     public void showCanMovePoints(ChessComponent chessComponent){
 
-        for (ChessboardPoint i : chessComponent.getCanMovePoints(this.getChessComponents(), this.getCurrentColor())){
-
-        }
+        chessComponent.getCanMovePoints(this.getChessComponents(), this.getCurrentColor());
     }
 
 
@@ -404,26 +402,6 @@ public class Chessboard extends JComponent {
         }
         ClickController.b =huihe;
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (chessData.get(i).charAt(j)!='K'&&chessData.get(i).charAt(j)!='k'&&chessData.get(i).charAt(j)!='Q'&&chessData.get(i).charAt(j)!='q'&&chessData.get(i).charAt(j)!='R'&&chessData.get(i).charAt(j)!='r'&&chessData.get(i).charAt(j)!='P'&&chessData.get(i).charAt(j)!='p'&&chessData.get(i).charAt(j)!='N'&&chessData.get(i).charAt(j)!='n'&&chessData.get(i).charAt(j)!='B'&&chessData.get(i).charAt(j)!='b'&&chessData.get(i).charAt(j)!='-'){
-                    JOptionPane.showMessageDialog(null,"棋子并非六种之一，棋子并非黑白棋子");
-                }
-            }
-        }
-
-        for (int i = 0; i < 8; i++) {
-            if (chessData.get(i).length()!=8){
-                JOptionPane.showMessageDialog(null,"棋盘并非8*8");
-            }
-        }
-
-        if (chessData.size()!=10){
-            JOptionPane.showMessageDialog(null,"棋盘并非8*8");
-        }
-        if (chessData.get(8).charAt(0)!='W'&&chessData.get(8).charAt(0)=='B'){
-            JOptionPane.showMessageDialog(null,"缺少下一步行棋方");
-        }
         repaint();
     }
 }
