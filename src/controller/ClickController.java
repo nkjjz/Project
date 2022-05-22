@@ -40,8 +40,10 @@ public class ClickController {
                 ChessComponent recordFirst = first;
                 first = null;
                 recordFirst.repaint();
+                notShowCanMovePoints(recordFirst);
             } else if (handleSecond(chessComponent)) {
                 jiluQiJu(chessboard.getChessComponents());
+                notShowCanMovePoints(first);
                 cnt++;
                 if (cnt%2==0) {
                     round = "Round Black";
@@ -102,6 +104,13 @@ public class ClickController {
                 int y = temp.getY();
                 g.drawOval(x, y, temp.getWidth(), temp.getHeight());
             }
+        }
+    }
+
+    public void notShowCanMovePoints(ChessComponent chessComponent){
+        List<ChessboardPoint> list = chessComponent.getCanMovePoints(chessboard.getChessComponents(), chessboard.getCurrentColor());
+        for (ChessboardPoint i : list){
+            chessboard.getChessComponents()[i.getX()][i.getY()].repaint();
         }
     }
 

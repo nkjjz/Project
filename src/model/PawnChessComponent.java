@@ -138,7 +138,7 @@ switch (this.getChessColor()){
                     return new ChessboardPoint(2, 0);
                 }
             }else if (col == 7){
-                if (chessboard[3][col - 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
+                if (chessboard[3][col - 1] instanceof PawnChessComponent && chessboard[3][col - 1].getChessColor() != this.getChessColor()){
                     return new ChessboardPoint(2, 7);
                 }
             }
@@ -159,7 +159,7 @@ switch (this.getChessColor()){
                     return new ChessboardPoint(5, 0);
                 }
             }else if (col == 7){
-                if (chessboard[4][col - 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
+                if (chessboard[4][col - 1] instanceof PawnChessComponent && chessboard[3][col - 1].getChessColor() != this.getChessColor()){
                     return new ChessboardPoint(5, 7);
                 }
             }
