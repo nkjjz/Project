@@ -17,7 +17,7 @@ public class StartPanel {
             jFrame.getContentPane().setLayout(null);
             JPanel imPanel=(JPanel) jFrame.getContentPane();
             imPanel.setOpaque(false);
-            ImageIcon icon=new ImageIcon("images/Background.jpg");
+            ImageIcon icon=new ImageIcon("./images/Background.jpg");
             JLabel label = new JLabel(icon);
             label.setBounds(0, 0, jFrame.getWidth(), jFrame.getHeight());
             icon.setImage(icon.getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_DEFAULT));
