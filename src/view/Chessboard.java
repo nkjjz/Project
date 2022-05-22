@@ -240,6 +240,13 @@ public class Chessboard extends JComponent {
         return chessComponents[chessComponent.getChessboardPoint().getX()][chessComponent.getChessboardPoint().getY()];
     }
 
+    public void showCanMovePoints(ChessComponent chessComponent){
+
+        for (ChessboardPoint i : chessComponent.getCanMovePoints(this.getChessComponents(), this.getCurrentColor())){
+
+        }
+    }
+
 
     public void initiateEmptyChessboard() {
         for (int i = 0; i < chessComponents.length; i++) {

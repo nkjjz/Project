@@ -7,6 +7,7 @@ import view.Chessboard;
 import view.ChessboardPoint;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class ClickController {
                 chessComponent.setSelected(true);
                 first = chessComponent;
                 first.repaint();
+                chessboard.showCanMovePoints(first);
             }
         } else {
             if (first == chessComponent) { // 再次点击取消选取
@@ -66,11 +68,16 @@ public class ClickController {
                         }
 
                     }
-                    if (completelyCaptured(rival)){ //每次移动完都要判断对手是否被将死 若被将死 则返回胜方
-                        ChessGameFrame.showWinner(chessboard);
-                    }else {
-                        //判断当前行棋方移动后是否将对方军 若将军则提示
-                        if (chessboard.captureKing(chessboard.getCurrentColor())){
+                    //判断当前行棋方移动后是否将对方军 若将军则提示
+                    if (chessboard.captureKing(chessboard.getCurrentColor())){
+                        if (completelyCaptured(rival, first)){ //每次移动完都要判断对手是否被将死 若被将死 则返回胜方并restart
+                            ChessGameFrame.showWinner(chessboard);
+                            chessboard.getClickController().forStart();
+                            chessboard.initiateEmptyChessboard();
+                            chessboard.inti();
+                            chessboard.setCurrentColor(ChessColor.BLACK);
+                            chessboard.repaint();
+                        }else {
                             ChessGameFrame.addPrompt(chessboard);
                             first.repaint();
                         }
@@ -110,15 +117,16 @@ public class ClickController {
                     if (temp != null) {
                         if (temp.getX() == chessComponent.getChessboardPoint().getX() && temp.getY() == chessComponent.getChessboardPoint().getY()) {
                             if (chessComponent.getChessColor() != chessboard.getCurrentColor()){
-                                chessboard.removePasserPawn(first, chessComponent, chessboard);
+                                chessboard.removePasserPawn(first, chessComponent, chessboard); //将被吃的过路兵移除
                                 return true;
-                            }else return false;
-                        }else return false;
-                    }else return false;
+                            } else return false;
+                        } else return false;
+                    } else return false;
                 } else {
                     return chessComponent.getChessColor() != chessboard.getCurrentColor();
                 }
-            }else return false;
+            }
+            else return false;
         } else {
             return chessComponent.getChessColor() != chessboard.getCurrentColor() &&
                     first.canMoveTo(chessboard.getChessComponents(), chessComponent.getChessboardPoint());
@@ -127,7 +135,7 @@ public class ClickController {
 
 
 
-    public boolean completelyCaptured(ChessColor rival){ //判断对手的王是否被将死
+    public boolean completelyCaptured(ChessColor rival, ChessComponent chessComponent){ //判断对手的王是否被将死
         ChessComponent kingOfRival = chessboard.getKingOfRival(chessboard.getCurrentColor());
         List<ChessboardPoint> canMovePoints = kingOfRival.getCanMovePoints(chessboard.getChessComponents(), rival);
         List<ChessComponent> chessComponentList = chessboard.getPlayerChessComponents(rival);
@@ -137,15 +145,15 @@ public class ClickController {
         }else {
             for (ChessboardPoint i : canMovePoints) {
                 for (ChessComponent j : chessComponentList) {
-                    if (kingOfRival.capturedByOthers(chessboard.getChessComponents(), i) && !j.canMoveTo(chessboard.getChessComponents(), i)) {
+                    if (kingOfRival.capturedByOthers(chessboard.getChessComponents(), i) && !j.canMoveTo(chessboard.getChessComponents(), chessComponent.getChessboardPoint())) {
                         cnt++;
-                    } else if (kingOfRival.capturedByPawn(chessboard.getChessComponents(), i) && !j.canMoveTo(chessboard.getChessComponents(), i)) {
+                    } else if (kingOfRival.capturedByPawn(chessboard.getChessComponents(), i) && !j.canMoveTo(chessboard.getChessComponents(), chessComponent.getChessboardPoint())) {
                         cnt++;
                     }
                 }
             }
         }
-        return cnt == canMovePoints.size();
+        return cnt == canMovePoints.size() * (chessComponentList.size() - 1);
     }
 
     public boolean arriveBaseline(ChessComponent chessComponent){
