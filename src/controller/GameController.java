@@ -26,43 +26,48 @@ public class GameController {
         try {
             List<String> chessData = Files.readAllLines(Path.of(path));
             for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (chessData.get(i).charAt(j) != 'K' && chessData.get(i).charAt(j) != 'k' && chessData.get(i).charAt(j) != 'Q' && chessData.get(i).charAt(j) != 'q' && chessData.get(i).charAt(j) != 'R' && chessData.get(i).charAt(j) != 'r' && chessData.get(i).charAt(j) != 'P' && chessData.get(i).charAt(j) != 'p' && chessData.get(i).charAt(j) != 'N' && chessData.get(i).charAt(j) != 'n' && chessData.get(i).charAt(j) != 'B' && chessData.get(i).charAt(j) != 'b' && chessData.get(i).charAt(j) != '-') {
-                        qizi = false;
-                        JOptionPane.showMessageDialog(null,"棋子并非六种之一，棋子并非黑白棋子");
-                        break;
-                    } else {
-                        qizi = true;
-                    }
-                }
-            }
-            for (int i = 0; i < 8; i++) {
-                if (chessData.get(i).length() != 8) {
+                if (chessData.get(i).length() != 8||chessData.size()!=11) {
                     qipandaxiao = false;
-                    JOptionPane.showMessageDialog(null,"棋盘并非8*8");
                     break;
                 } else {
                     qipandaxiao = true;
                 }
-            }
-            if (chessData.get(8).charAt(0)!='W'&&chessData.get(8).charAt(0)!='B'){
-                xingqifang = false;
-                JOptionPane.showMessageDialog(null,"缺少下一步行棋方");
+            }if (!qipandaxiao){
+                JOptionPane.showMessageDialog(null,"棋盘并非8*8");
             }else {
-                xingqifang = true;
-            }
-            if (qizi && qipandaxiao&&xingqifang) {
-                chessboard.loadGame(chessData);
-                return chessData;
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if (chessData.get(i).charAt(j) != 'K' && chessData.get(i).charAt(j) != 'k' && chessData.get(i).charAt(j) != 'Q' && chessData.get(i).charAt(j) != 'q' && chessData.get(i).charAt(j) != 'R' && chessData.get(i).charAt(j) != 'r' && chessData.get(i).charAt(j) != 'P' && chessData.get(i).charAt(j) != 'p' && chessData.get(i).charAt(j) != 'N' && chessData.get(i).charAt(j) != 'n' && chessData.get(i).charAt(j) != 'B' && chessData.get(i).charAt(j) != 'b' && chessData.get(i).charAt(j) != '-') {
+                            qizi = false;
+                            break;
+                        } else {
+                            qizi = true;
+                        }
+                    }
+                }if (!qizi){
+                    JOptionPane.showMessageDialog(null,"棋子并非六种之一，棋子并非黑白棋子");
+                }
+
+                if (chessData.get(8).charAt(0)!='W'&&chessData.get(8).charAt(0)!='B'){
+                    xingqifang = false;
+                    JOptionPane.showMessageDialog(null,"缺少下一步行棋方");
+                }else {
+                    xingqifang = true;
+                }
+                if (qizi && qipandaxiao&&xingqifang) {
+                    chessboard.loadGame(chessData);
+                    return chessData;
+                }
             }
         } catch(IOException e){
-                e.printStackTrace();
-            }
-            return null;
+            e.printStackTrace();
+        }
+        return null;
 
     }
 
-   public void saveFileData() {
+
+    public void saveFileData() {
        JFileChooser chooser = new JFileChooser();
        FileNameExtensionFilter filter = new FileNameExtensionFilter(
                "(*.txt)", "txt");
