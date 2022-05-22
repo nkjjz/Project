@@ -9,8 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static controller.ClickController.chessboard;
-import static controller.ClickController.cnt;
+import static controller.ClickController.*;
 
 /**
  * 这个类表示面板上的棋盘组件对象
@@ -385,8 +384,12 @@ public class Chessboard extends JComponent {
             }
         }
 
-        int bushu=cnt;
-        System.out.println(bushu);
+//
+        StringBuilder bushuString= new StringBuilder();
+        for (int j = 0; j < chessData.get(9).length(); j++) {
+            bushuString.append(chessData.get(9).charAt(j));
+        }
+        int bushu = Integer.parseInt(bushuString.toString());
         StringBuilder huiheString= new StringBuilder();
         for (int i = 1; i < chessData.get(8).length(); i++) {
             huiheString.append(chessData.get(8).charAt(i));
@@ -394,10 +397,13 @@ public class Chessboard extends JComponent {
         int huihe = Integer.parseInt(huiheString.toString());
         if (chessData.get(8).charAt(0)=='W'){
             ChessGameFrame.ActiveContainer.setText("Round White || counter: "+huihe);
+            chessboard.setCurrentColor(ChessColor.WHITE);
         }else if (chessData.get(8).charAt(0)=='B'){
             ChessGameFrame.ActiveContainer.setText("Round Black || counter: "+huihe);
+            chessboard.setCurrentColor(ChessColor.BLACK);
         }
         ClickController.b =huihe;
+        cnt = bushu;
 
         repaint();
     }

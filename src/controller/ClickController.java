@@ -238,7 +238,8 @@ public class ClickController {
         }else {
             a.append('W');
         }
-        a.append(b);
+        a.append(b).append("\n");
+        a.append(cnt);
         return a.toString();
     }
     public static void rejiluQiJu(){
