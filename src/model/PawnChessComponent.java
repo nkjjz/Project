@@ -8,8 +8,10 @@
         import java.awt.*;
         import java.io.File;
         import java.io.IOException;
+        import java.util.ArrayList;
+        import java.util.List;
 
-public class PawnChessComponent extends ChessComponent{
+        public class PawnChessComponent extends ChessComponent{
 
     private Image Pawn_WHITE;
     private Image Pawn_BLACK;
@@ -106,54 +108,68 @@ public class PawnChessComponent extends ChessComponent{
         return true;
     }
 
-    public ChessboardPoint haveAdjacentPawn(ChessComponent[][] chessboard){ //分别判断黑白方是否形成过路兵的情况
-        int col = this.getChessboardPoint().getY();
-        switch (this.getChessColor()){
-            case BLACK:
-                if (this.getChessboardPoint().getX() == 3){
-                    if (col - 1 >= 0 && col + 1 <= 7) {
-                        if (chessboard[3][col - 1] instanceof PawnChessComponent && chessboard[3][col - 1].getChessColor() != this.getChessColor()) {
-                            return new ChessboardPoint(2, col);
-                        } else if (chessboard[3][col + 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()) {
-                            return new ChessboardPoint(2, col);
-                        }
-                    }else if (col == 0){
-                        if (chessboard[3][col + 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
-                            return new ChessboardPoint(2, 0);
-                        }
-                    }else if (col == 7){
-                        if (chessboard[3][col - 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
-                            return new ChessboardPoint(2, 7);
-                        }
-                    }
-                }else {
-                    return null;
+    @Override
+    public List<ChessboardPoint> getCanMovePoints(ChessComponent[][] chessComponents, ChessColor player) {
+        List<ChessboardPoint> canMovePoints = new ArrayList<>();
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                ChessboardPoint point = new ChessboardPoint(i, j);
+                if (canMoveTo(chessComponents, point)){
+                    canMovePoints.add(point);
                 }
-                break;
-            case WHITE:
-                if (this.getChessboardPoint().getX() == 4){
-                    if (col - 1 >= 0 && col + 1 <= 7) {
-                        if (chessboard[4][col - 1] instanceof PawnChessComponent && chessboard[3][col - 1].getChessColor() != this.getChessColor()) {
-                            return new ChessboardPoint(5, col);
-                        } else if (chessboard[4][col + 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()) {
-                            return new ChessboardPoint(5, col);
-                        }
-                    }else if (col == 0){
-                        if (chessboard[4][col + 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
-                            return new ChessboardPoint(5, 0);
-                        }
-                    }else if (col == 7){
-                        if (chessboard[4][col - 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
-                            return new ChessboardPoint(5, 7);
-                        }
-                    }
-                }else {
-                    return null;
-                }
-                break;
+            }
         }
-        return null;
+        return canMovePoints;
     }
+
+    public ChessboardPoint haveAdjacentPawn(ChessComponent[][] chessboard){ //分别判断黑白方是否形成过路兵的情况
+int col = this.getChessboardPoint().getY();
+switch (this.getChessColor()){
+    case BLACK:
+        if (this.getChessboardPoint().getX() == 3){
+            if (col - 1 >= 0 && col + 1 <= 7) {
+                if (chessboard[3][col - 1] instanceof PawnChessComponent && chessboard[3][col - 1].getChessColor() != this.getChessColor()) {
+                    return new ChessboardPoint(2, col);
+                } else if (chessboard[3][col + 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()) {
+                    return new ChessboardPoint(2, col);
+                }
+            }else if (col == 0){
+                if (chessboard[3][col + 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
+                    return new ChessboardPoint(2, 0);
+                }
+            }else if (col == 7){
+                if (chessboard[3][col - 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
+                    return new ChessboardPoint(2, 7);
+                }
+            }
+        }else {
+            return null;
+        }
+        break;
+    case WHITE:
+        if (this.getChessboardPoint().getX() == 4){
+            if (col - 1 >= 0 && col + 1 <= 7) {
+                if (chessboard[4][col - 1] instanceof PawnChessComponent && chessboard[3][col - 1].getChessColor() != this.getChessColor()) {
+                    return new ChessboardPoint(5, col);
+                } else if (chessboard[4][col + 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()) {
+                    return new ChessboardPoint(5, col);
+                }
+            }else if (col == 0){
+                if (chessboard[4][col + 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
+                    return new ChessboardPoint(5, 0);
+                }
+            }else if (col == 7){
+                if (chessboard[4][col - 1] instanceof PawnChessComponent && chessboard[3][col + 1].getChessColor() != this.getChessColor()){
+                    return new ChessboardPoint(5, 7);
+                }
+            }
+        }else {
+            return null;
+        }
+        break;
+}
+return null;
+}
 
 
 

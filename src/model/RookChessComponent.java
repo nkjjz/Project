@@ -8,8 +8,10 @@
         import java.awt.*;
         import java.io.File;
         import java.io.IOException;
+        import java.util.ArrayList;
+        import java.util.List;
 
-/**
+        /**
  * 这个类表示国际象棋里面的车
  */
 public class RookChessComponent extends ChessComponent {
@@ -97,6 +99,19 @@ public class RookChessComponent extends ChessComponent {
             return false;
         }
         return true;
+    }
+
+    public java.util.List<ChessboardPoint> getCanMovePoints(ChessComponent[][] chessComponents, ChessColor player) {
+        List<ChessboardPoint> canMovePoints = new ArrayList<>();
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                ChessboardPoint point = new ChessboardPoint(i, j);
+                if (canMoveTo(chessComponents, point)){
+                    canMovePoints.add(point);
+                }
+            }
+        }
+        return canMovePoints;
     }
 
     /**

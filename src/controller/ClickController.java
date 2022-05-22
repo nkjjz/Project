@@ -32,7 +32,7 @@ public class ClickController {
                 chessComponent.setSelected(true);
                 first = chessComponent;
                 first.repaint();
-                chessboard.showCanMovePoints(first);
+                showCanMovePoints(first);
             }
         } else {
             if (first == chessComponent) { // 再次点击取消选取
@@ -89,6 +89,20 @@ public class ClickController {
             }
         }
         ChessGameFrame.setActiveContainer();
+    }
+
+    public void showCanMovePoints(ChessComponent chessComponent){
+        List<ChessboardPoint> list = chessComponent.getCanMovePoints(chessboard.getChessComponents(), chessboard.getCurrentColor());
+        for (ChessboardPoint i : list){
+            Graphics g = chessboard.getGraphics();
+            g.setColor(Color.MAGENTA);
+            ChessComponent temp = chessboard.getChessComponents()[i.getX()][i.getY()];
+            if (handleSecond(temp)) {
+                int x = temp.getX();
+                int y = temp.getY();
+                g.drawOval(x, y, temp.getWidth(), temp.getHeight());
+            }
+        }
     }
 
     /**

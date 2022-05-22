@@ -8,8 +8,10 @@
         import java.awt.*;
         import java.io.File;
         import java.io.IOException;
+        import java.util.ArrayList;
+        import java.util.List;
 
-public class QueenChessComponent extends ChessComponent{
+        public class QueenChessComponent extends ChessComponent{
 
     private Image Queen_WHITE;
     private Image Queen_BLACK;
@@ -65,6 +67,19 @@ public class QueenChessComponent extends ChessComponent{
             return false;
         }
         return true;
+    }
+
+    public java.util.List<ChessboardPoint> getCanMovePoints(ChessComponent[][] chessComponents, ChessColor player) {
+        List<ChessboardPoint> canMovePoints = new ArrayList<>();
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                ChessboardPoint point = new ChessboardPoint(i, j);
+                if (canMoveTo(chessComponents, point)){
+                    canMovePoints.add(point);
+                }
+            }
+        }
+        return canMovePoints;
     }
 
     @Override
