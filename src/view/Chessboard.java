@@ -402,6 +402,22 @@ public class Chessboard extends JComponent {
             ChessGameFrame.ActiveContainer.setText("Round Black || counter: "+huihe);
             chessboard.setCurrentColor(ChessColor.BLACK);
         }
+
+        StringBuilder counterString = new StringBuilder();
+        for (int i = 0; i < chessData.get(10).length(); i++){
+            counterString.append(chessData.get(10).charAt(i));
+        }
+
+        int counter = 0;
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                if (chessboard.getChessComponents()[i][j] instanceof PawnChessComponent){
+                    chessboard.getChessComponents()[i][j].setCounter(counterString.charAt(counter) - 48);
+                    counter++;
+                }
+            }
+        }
+
         ClickController.b =huihe;
         cnt = bushu;
 

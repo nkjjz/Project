@@ -123,8 +123,8 @@ public List<ChessboardPoint> getCanMovePoints(ChessComponent[][] chessComponents
 }
 
 public ChessboardPoint haveAdjacentPawn(ChessComponent[][] chessboard){ //分别判断黑白方是否形成过路兵的情况
-int col = this.getChessboardPoint().getY();
-switch (this.getChessColor()){
+    int col = this.getChessboardPoint().getY();
+    switch (this.getChessColor()){
     case BLACK:
         if (this.getChessboardPoint().getX() == 3){
             if (col - 1 >= 0 && col + 1 <= 7) {
