@@ -392,10 +392,10 @@ public class Chessboard extends JComponent {
             huiheString.append(chessData.get(8).charAt(i));
         }
         int huihe = Integer.parseInt(huiheString.toString());
-        if (bushu%2==0){
-            ChessGameFrame.ActiveContainer.setText("Round Black || counter: "+huihe);
-        }else {
+        if (chessData.get(8).charAt(0)=='W'){
             ChessGameFrame.ActiveContainer.setText("Round White || counter: "+huihe);
+        }else if (chessData.get(8).charAt(0)=='B'){
+            ChessGameFrame.ActiveContainer.setText("Round Black || counter: "+huihe);
         }
         ClickController.b =huihe;
 

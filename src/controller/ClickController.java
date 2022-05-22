@@ -35,7 +35,7 @@ public class ClickController {
                 showCanMovePoints(first);
             }
         } else {
-            if (first == chessComponent) { // 再次点击取消选取
+            if (first == chessComponent) {
                 chessComponent.setSelected(false);
                 ChessComponent recordFirst = first;
                 first = null;
