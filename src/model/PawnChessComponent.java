@@ -42,7 +42,7 @@ public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint des
             if (source.getX() == 1) { //是否第一次移动
                 if (destination.getX() - source.getX() <= 2 && destination.getX() - source.getX() > 0) {
                     int col = source.getY();
-                    for (int row = source.getX() + 1; row < destination.getX(); row++) {
+                    for (int row = source.getX() + 1; row <= destination.getX(); row++) {
                         if (!(chessComponents[row][col] instanceof EmptySlotComponent)) {
                             return false;
                         }
